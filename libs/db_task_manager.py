@@ -179,7 +179,7 @@ class DBTaskManager(object):
                     db_task.status = "failed"
                     db_task.invalid = True
                     session.add(db_task)
-                
+
             session.commit()
             session.close()
 
@@ -277,7 +277,7 @@ class DBTaskManager(object):
     @sqlalchemy_rollback
     def get_task_by_title(self, title):
         return Session().query(db.Task).filter(db.Task.taskname == title)
-    
+
     @sqlalchemy_rollback
     def get_task_list(self, start_task_id=0, offset=0, limit=30, q="", t="", a="", order=db.Task.createtime, dis=db.desc, all=False):
         session = Session()
@@ -334,7 +334,7 @@ class DBTaskManager(object):
             file.lixian_url = file._lixian_url
             #file.lixian_url = fix_lixian_co(file.lixian_url)
         return task.files
-    
+
     @mem_cache(2*60*60)
     @sqlalchemy_rollback
     def get_tag_list(self):
@@ -359,7 +359,7 @@ class DBTaskManager(object):
         return result
 
     @catch_connect_error((-99, "connection error"))
-    def add_task(self, url, title=None, tags=set(), creator="", anonymous=False, need_miaoxia=True):
+    def add_task(self, url, title=None, tags=set(), creator="", anonymous=False, need_miaoxia=True, verifycode=None, verifykey=None):
         session = Session()
         def update_task(task, title=title, tags=tags, creator=creator, anonymous=anonymous):
             if not task:
@@ -406,7 +406,7 @@ class DBTaskManager(object):
             check = self.xunlei.torrent_upload
             add_task_with_info = self.xunlei.add_bt_task_with_dict
             url = (url['filename'], StringIO(url['body']))
-         
+
         # get info
         if url_type in ("bt", "torrent", "magnet"):
             if isinstance(url, tuple):
@@ -447,7 +447,7 @@ class DBTaskManager(object):
             info['title'] = "%s#%s@%s %s" % (options.site_name, _random(), self.time(), info['title'])
 
         # step 4: commit & fetch result
-        result = add_task_with_info(url, info)
+        result = add_task_with_info(url, info, verifycode, verifykey)
         if not result:
             return (0, "error")
         self._update_task_list(5)

@@ -1,10 +1,10 @@
 {% extends front.html %}
 
-{% block title %}{{ options.site_name }} - {{ task.taskname }} - 迅雷离线下载分享{% end %}
+{% block title %}{{ task.taskname }} - {{ options.site_name }} 离线下载{% end %}
 {% block desc %}{% if task.tags %}TAGS:{{ ", ".join(task.tags) }}{% end %} UP主:{{ not task.invalid and email2name(task.creator) or "unknow" }}{% end %}
 
 {% block more_head %}
-<script src="http://pstatic.xunlei.com/js/base64.js"></script>
+<script src="{{static_url('js/base64.js')}}"></script>
 <script type="text/javascript" src="{{static_url('js/common.js')}}"></script>
 <script type="text/javascript">
   LE.taskname = {% raw json_encode(task.taskname) %};
@@ -21,7 +21,7 @@
     $.fancybox('<textarea id="link-text" style="width: 700px; height: 320px;">'+str+'</textarea>');
   };
   LS.share_url = {% raw json_encode(request.protocol+"://"+request.host+"/share/"+str(task.id)) %};
-  LS.share_title = {% raw json_encode(task.taskname+u" - 迅雷离线下载分享 - "+options.site_name) %};
+  LS.share_title = {% raw json_encode(task.taskname+" - "+options.site_name+u" 离线下载") %};
 </script>
 <link rel="canonical" href="{{ request.protocol }}://{{ request.host }}/share/{{ task.id }}" />
 {% end %}
@@ -32,7 +32,6 @@
 {% else %}
 {% include info.html %}
 {% end %}
-<a class="goback" href="/"><div id="goback-button">&lt;- 回到首页</div></a>
 {% end %}
 
 {% block list %}
@@ -57,10 +56,10 @@
   <div class="ext-info">
     {% if task.status == "finished" %}
     <div id="share-button" class="task-button">
-      <a href="/share/{{ task.id }}" target="_blank"><div>分享</div></a>
+      <a href="/share/{{ task.id }}" target="_top"><div>分享</div></a>
       <div id="share-links" class="more-links" style="display: none;">
         <a href="javascript:LS.share_google();" title="分享到 Google+"><div class="task-button">Google+</div></a>
-        <a href="javascript:LS.share_twitter();" title="分享到 Twitter+"><div class="task-button">Twitter</div></a>
+        <a href="javascript:LS.share_twitter();" title="分享到 Twitter"><div class="task-button">Twitter</div></a>
         <a href="javascript:LS.share_sina();" title="分享到 新浪微博"><div class="task-button">新浪微博</div></a>
         <a href="javascript:LS.share_qq();" title="分享到 腾讯微博"><div class="task-button">腾讯微博</div></a>
         <a href="javascript:LS.share_douban();" title="分享到 豆瓣"><div class="task-button">豆瓣</div></a>
@@ -70,7 +69,7 @@
       <div>批量下载</div>
       <div id="batch-links" class="more-links" style="display: none;">
         <a href="javascript:LE.wget_links();"><div class="task-button">wget</div></a>
-        <a href="javascript:LE.aria2_links();"><div class="task-button">aria2x10</div></a>
+        <a href="javascript:LE.aria2_links();"><div class="task-button">aria2 x10</div></a>
         <a href="/export/{{ url_escape(options.site_name) }}_idm_{{ task.id }}.ef2"><div class="task-button">IDM 导出</div></a>
         <a href="/export/{{ url_escape(options.site_name) }}_orbit_{{ task.id }}.olt"><div class="task-button">Orbit导出</div></a>
         <a href="/export/{{ url_escape(options.site_name) }}_aria2c_{{ task.id }}_.down"><div class="task-button">aria2导出</div></a>
@@ -78,7 +77,7 @@
     </div>
     {% else %}
     <div class="task-button">
-      <a href="/share/{{ task.id }}" target="_blank"><div>{{ format_status(task.status) }}</div></a>
+      <a href="/share/{{ task.id }}"><div>{{ format_status(task.status) }}</div></a>
     </div>
     {% end %}
     <span class="uploader">UP主: {{ not task.invalid and email2name(task.creator) or "unknow" }}</span>
@@ -106,16 +105,27 @@
   {% end %}
   <li class="push-bottom"></li>
 </ul>
+
+<!--
+<div id="google-comments">
+<div id='gpluscomments'></div>
+<script src='https://apis.google.com/js/plusone.js' type='text/javascript'></script>
+<script>
+    gapi.comments.render('gpluscomments', {href: '{{ request.protocol }}://{{ request.host }}/share/{{ task.id }}', first_party_property: 'BLOGGER', view_type: 'FILTERED_POSTMOD'})
+</script>
+</div>
+-->
+
 <div class="hidden"><textarea id="link-text" style="width: 700px; height: 320px;"> </textarea></div>
 <div class="hidden">
   <a href="#disabled_cross_cookie" id="disable-helper"></a>
   <div id="disabled_cross_cookie">
     <dl>
-      <dd>Cookie尚未写入成功，无法使用浏览器直接下载。</dd>
+      <dd>Cookie 尚未写入成功，无法使用浏览器直接下载。</dd>
       <dt>
         <ul>
           <li><a href="javascript:$.fancybox.close();">好吧，我使用批量下载功能下载</a></li>
-          <li><a href="{{ options.cross_userscript }}" target="_blank">我尚未安装cross-cookie脚本</a></li>
+          <li><a href="{{ options.cross_userscript_local }}">我要安装 cross-cookie 脚本</a></li>
         </ul>
       </dt>
     </dl>
@@ -171,8 +181,8 @@
     $("#batch-links").prepend(custom);
   }
 
-  $("#wget-button").fancybox({onStart: LE.wget_links});  
-  $("#aria2-button").fancybox({onStart: LE.aria2_links});  
+  $("#wget-button").fancybox({onStart: LE.wget_links});
+  $("#aria2-button").fancybox({onStart: LE.aria2_links});
   $("#disable-helper").fancybox();
   if (document.cookie.indexOf("xss=") == -1) {
     $(".share-file-title > a").click(function() {

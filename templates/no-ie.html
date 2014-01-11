@@ -2,37 +2,56 @@
 <html lang="zh-CN">
 <head>
 <meta charset=utf-8 />
-<title>迅雷离线分享 - NO-IE</title>
+<title>{{ options.site_name }} 离线下载 - NO IE</title>
+<meta name="keywords" content="Xunlei, Lixian, SinoSky, 迅雷, 迅雷离线, 资源分享, 下载, 离线下载" />
+<meta name="description" content="{% block desc %}{{ options.site_name }} 离线下载是一个基于迅雷离线服务的资源分享/下载网站。{% end %}" />
+<meta name="author" content="Binux">
+<meta name="generator" content="{{ options.site_name }}">
+<!-- lixian.xunlei(https://github.com/binux/lixian.xunlei) by binux(http://blog.binux.me/), licensed LGPL(https://www.gnu.org/licenses/lgpl.html). -->
 <style>
     a, a:hover, a:visited { color: #fff; }
 </style>
+{% if options.baidu_account %}
+<script>
+var _hmt = _hmt || [];
+(function() {
+    var hm = document.createElement("script");
+    hm.src = "//hm.baidu.com/hm.js?{{ options.baidu_account }}";
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(hm, s);
+})();
+</script>
+{% end %}
+{% if options.ga_account %}
+<script type="text/javascript">
+(function(i, s, o, g, r, a, m) {
+    i['GoogleAnalyticsObject'] = r;
+    i[r] = i[r] || function() {
+        (i[r].q = i[r].q || []).push(arguments)
+    }, i[r].l = 1 * new Date();
+    a = s.createElement(o),
+    m = s.getElementsByTagName(o)[0];
+    a.async = 1;
+    a.src = g;
+    m.parentNode.insertBefore(a, m)
+})(window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga');
+
+ga('create', '{{ options.ga_account }}', 'sinosky.org');
+ga('require', 'linkid', 'linkid.js');
+ga('send', 'pageview');
+</script>
+{% end %}
 </head>
 <body>
     <div id="bsod" style="background-color: #00A; color: white; left: 0; position: fixed; display: block; top: 0px; width: 100%; height: 100%;">
-        <div id="bsod-content" style="margin: 15% auto 0; width: 600px; font-size: 150%;">
+        <div id="bsod-content" style="margin: 15% auto 0; width: 700px; font-size: 150%;">
             <h1><span>NO Internet Explorer!</span></h1>
             <div class="content">
-                <p>本站不支持Internet Explorer浏览器!</p>
-                <p>请使用<a href="http://firefox.com.cn/download/" target="_blank">Firefox</a>、<a href="https://www.google.com/chrome" target="_blank">Chrome</a>或<a href="http://www.apple.com.cn/safari/" target="_blank">Safari</a>访问<a href="/">{{ options.site_name }}</a></p>
-        </div>
-        <div class="exit">
+                <p>本站不支持 Internet Explorer 浏览器!</p>
+                <p>请使用 <a href="https://www.google.com/intl/zh-CN/chrome/browser/" target="_blank">Chrome</a>、<a href="http://firefox.com.cn/download/" target="_blank">Firefox</a> 或 <a href="https://www.apple.com/cn/safari/" target="_blank">Safari</a> 访问 <a href="/">{{ options.site_name }} 离线下载</a>。</p>
+            </div>
+            <div class="exit"></div>
         </div>
     </div>
-{% if options.ga_account %}
-<script type="text/javascript">
-
-  var _gaq = _gaq || [];
-  _gaq.push(['_setAccount', '{{ options.ga_account }}']);
-  _gaq.push(['_trackPageview']);
-
-  (function() {
-    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-  })();
-
-</script>
-{% end %}
-</div>
 </body>
 </html>

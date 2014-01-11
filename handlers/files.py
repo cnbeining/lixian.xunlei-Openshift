@@ -18,10 +18,10 @@ class GetLiXianURLHandler(BaseHandler):
 
         task_id = int(self.get_argument("task_id"))
         referer = self.request.headers.get("referer")
-        if referer and not self.request.host in referer[4:10+len(self.request.host)]:
+        if not referer or not self.request.host in referer[4:10+len(self.request.host)]:
             self.redirect("/share/"+str(task_id))
             return
-        
+
         task = self.task_manager.get_task(task_id)
         if task is None:
             raise HTTPError(404, "task is not exists.")
@@ -137,7 +137,7 @@ class orbitExportHandler(BaseHandler):
                 index = set((int(x) for x in index.split(",")))
             except:
                 raise HTTPError(403, "Request format error.")
-                
+
         def rewrite_url(url, filename):
             return lixian_n_re.sub("&n="+thunder_filename_encode(filename), url)
 

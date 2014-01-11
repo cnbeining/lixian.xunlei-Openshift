@@ -10,48 +10,55 @@
 {% block body %}
 <div id="addtask_head">
   <img src="{{ static_url('img/addtask.gif') }}" />
-	<!--
+<!--
 	<span style="float:left;margin:9px 0 0 3px">
 		添加任务
-  </span> -->
+    </span>
+-->
   <span id="message">{{ message }}</span>
 </div>
 <div id="addtask_main">
 <form class="addtask_form" method="post" enctype="multipart/form-data" onsubmit="return on_submit();">
 	<div class="addtask_up">
-	<div class="l">任务下载地址</div>
-	<div class="r">
-        <input type="text" name="url" id="task_url" value="" placeholder="HTTP, ED2K or Magnet" style="width:230px;border-right:none;" onkeyup="on_url_change();" onPaste="on_url_change();" />
-        <div class="bt_file">
-          <input type="file" name="btfile" class="file" onchange="on_file_change();" />
-          <div class="fake_button">
-            <button class="button file_button" id="bt_button">种子上传</button>
-          </div>
-        </div>
-		<span>(必填)</span>
+	<div class="addtask_l">任务下载地址</div>
+	<div class="addtask_r">
+    <input type="text" name="url" id="task_url" value="" placeholder="HTTP, ED2K or Magnet" style="width:230px;border-right:none;" onkeyup="on_url_change();" onPaste="on_url_change();" />
+    <div class="bt_file">
+      <input type="file" name="btfile" class="file" onchange="on_file_change();" />
+      <div class="fake_button">
+        <button class="button file_button" id="bt_button">种子上传</button>
+      </div>
+    </div>
+    <span>(必填)</span>
 	</div>
 	</div>
-	
+
 	<div class="addtask_up">
-	<div class="l">任务标题</div>
-	<div class="r">
+	<div class="addtask_l">任务标题</div>
+	<div class="addtask_r">
 		<input type="text" name="title" id="task_title" maxlength="256" value="" style="width:300px;" />
 		<span>(选填，默认任务文件名)</span>
 	</div>
 	</div>
-	
+
 	<div class="addtask_up">
-	<div class="l">标签TAG</div>
-	<div class="r">
+	<div class="addtask_l">标签TAG</div>
+	<div class="addtask_r">
 		<input type="text" name="tags" id="task_tags" maxlength="1024" value="" style="width:300px;" />
-		<span>(必填，多个请用逗号分开)</span>
+		<span>(选填，多个用逗号分开)</span>
 	</div>
 	</div>
-	
+
 	<div class="addtask_button">
-        {% if options.using_xsrf %}{% raw handler.xsrf_form_html() %}{% end %}
-        <input class="button" name="b" type="submit" value="提交" />
-		<button class="button" type="reset" onclick="location.reload();">重置</button>
+    <div class="CAPTCHA">
+      <img src="/verifycode.jpg?timestamp={{ timestamp }}" title="点击刷新验证码" onclick="this.src='/verifycode.jpg?timestamp='+new Date().getTime()" />
+      <input type="text" name="verifycode" id="verify_code" maxlength="4" value="" />
+    </div>
+    <div class="addtask_submit">
+      {% if options.using_xsrf %}{% raw handler.xsrf_form_html() %}{% end %}
+      <input class="button" name="b" type="submit" value="提交" />
+		  <button class="button" type="reset" onclick="location.reload();">重置</button>
+    </div>
 	</div>
 </form>
 </div>

@@ -12,7 +12,7 @@ default_group_permission = {
         "mod_task": True,
         "view_tasklist": True,
         "view_invalid": False,
-        "need_miaoxia": True,
+        "need_miaoxia": False,
         "admin": False,
 }
 not_login_permission = {
@@ -36,14 +36,14 @@ group_permission = {
         "admin": {
             "add_task_limit": False,
             "view_invalid": True,
-            "need_miaoxia": False,
             "admin": True,
         },
         "block": {
             "add_task": False,
-            "add_anonymous_task": True,
-            "add_task_limit_size": 10,
+            "add_anonymous_task": False,
+            "add_task_limit_size": 0,
             "mod_task": False,
+            "need_miaoxia": True,
         },
 }
 permission_mark = {

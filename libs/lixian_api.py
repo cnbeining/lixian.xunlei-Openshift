@@ -3,7 +3,6 @@
 #author: binux<17175297.hk@gmail.com>
 
 import re
-import time
 import json
 import logging
 import requests
@@ -13,6 +12,7 @@ from random import random, sample
 from urlparse import urlparse
 from pprint import pformat
 from jsfunctionParser import parser_js_function_call
+from libs.util import _now, update_verifykey
 
 DEBUG = logging.debug
 
@@ -56,7 +56,7 @@ class LiXianAPI(object):
     DEFAULT_USER_AGENT = 'User-Agent:Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/535.2 (KHTML, like Gecko) Chrome/15.0.874.106 Safari/535.2'
     DEFAULT_REFERER = 'http://lixian.vip.xunlei.com/'
     def __init__(self, user_agent = DEFAULT_USER_AGENT, referer = DEFAULT_REFERER):
-        self.session = requests.session()
+        self.session = requests.Session()
         self.session.headers['User-Agent'] = user_agent
         self.session.headers['Referer'] = referer
 
@@ -83,17 +83,13 @@ class LiXianAPI(object):
         return self.islogin
 
     @property
-    def _now(self):
-        return int(time.time()*1000)
-
-    @property
     def _random(self):
-        return str(self._now)+str(random()*(2000000-10)+10)
+        return str(_now())+str(random()*(2000000-10)+10)
 
     CHECK_URL = 'http://login.xunlei.com/check?u=%(username)s&cachetime=%(cachetime)d'
     def _get_verifycode(self, username):
         r = self.session.get(self.CHECK_URL %
-                {"username": username, "cachetime": self._now})
+                {"username": username, "cachetime": _now()})
         r.raise_for_status()
         #DEBUG(pformat(r.content))
 
@@ -106,7 +102,7 @@ class LiXianAPI(object):
 
     VERIFY_CODE = 'http://verify2.xunlei.com/image?cachetime=%s'
     def verifycode(self):
-        r = self.session.get(self.VERIFY_CODE % self._now)
+        r = self.session.get(self.VERIFY_CODE % _now())
         return r.content
 
     REDIRECT_URL = "http://dynamic.lixian.vip.xunlei.com/login"
@@ -124,7 +120,7 @@ class LiXianAPI(object):
         self.session.cookies["pagenum"] = str(pagenum)
         r = self.session.get(self.SHOWTASK_UNFRSH_URL, params={
                                                 "callback": "json1234567890",
-                                                "t": self._now,
+                                                "t": _now(),
                                                 "type_id": st,
                                                 "page": 1,
                                                 "tasknum": pagenum,
@@ -162,7 +158,7 @@ class LiXianAPI(object):
                                   "callback": "queryUrl",
                                   "u": url,
                                   "random": self._random,
-                                  "tcache": self._now})
+                                  "tcache": _now()})
         r.raise_for_status()
         #queryUrl(flag,infohash,fsize,bt_title,is_full,subtitle,subformatsize,size_list,valid_list,file_icon,findex,random)
         function, args = parser_js_function_call(r.content)
@@ -194,7 +190,7 @@ class LiXianAPI(object):
         return result
 
     BT_TASK_COMMIT_URL = "http://dynamic.cloud.vip.xunlei.com/interface/bt_task_commit?callback=jsonp1234567890"
-    def add_bt_task_with_dict(self, url, info):
+    def add_bt_task_with_dict(self, url, info, verifycode=None, verifykey=None):
         if not info: return False
         if info['flag'] == 0: return False
         data = dict(
@@ -209,9 +205,15 @@ class LiXianAPI(object):
                 #name = "undefined",
                 o_taskid = 0,
                 o_page = "task",
-                class_id = 0)
+                class_id = 0,
+                verify_code = verifycode
+                )
         data["from"] = 0
-        r = self.session.post(self.BT_TASK_COMMIT_URL, data)
+        DEBUG(pformat(data))
+        if verifycode and verifykey:
+            self.session.cookies = update_verifykey(self.session.cookies, verifykey)
+        DEBUG(pformat(self.session.cookies))
+        r = self.session.post(self.BT_TASK_COMMIT_URL, data=data)
         r.raise_for_status()
         DEBUG(pformat(r.content))
         if "jsonp1234567890" in r.content:
@@ -234,7 +236,7 @@ class LiXianAPI(object):
                                    "callback": "queryCid",
                                    "url": url,
                                    "random": self._random,
-                                   "tcache": self._now})
+                                   "tcache": _now()})
         r.raise_for_status()
         #queryCid(cid,gcid,file_size,avail_space,tname,goldbean_need,silverbean_need,is_full,random)
         function, args = parser_js_function_call(r.content)
@@ -254,24 +256,30 @@ class LiXianAPI(object):
 
     #TASK_COMMIT_URL = "http://dynamic.cloud.vip.xunlei.com/interface/task_commit?callback=ret_task&uid=%(uid)s&cid=%(cid)s&gcid=%(gcid)s&size=%(file_size)s&goldbean=%(goldbean_need)s&silverbean=%(silverbean_need)s&t=%(tname)s&url=%(url)s&type=%(task_type)s&o_page=task&o_taskid=0"
     TASK_COMMIT_URL = "http://dynamic.cloud.vip.xunlei.com/interface/task_commit"
-    def add_task_with_dict(self, url, info):
+    def add_task_with_dict(self, url, info, verifycode=None, verifykey=None):
         params = dict(
-            callback="ret_task",
-            uid=self.uid,
-            cid=info['cid'],
-            gcid=info['gcid'],
-            size=info['size'],
-            goldbean=0,
-            silverbean=0,
-            t=info['title'],
-            url=url,
-            type=0,
-            o_page="task",
-            o_taskid=0,
-            class_id=0,
-            database="undefined",
-            time="Wed May 30 2012 14:22:01 GMT 0800 (CST)",
-            noCacheIE=self._now)
+            callback = "ret_task",
+            uid = self.uid,
+            cid = info['cid'],
+            gcid = info['gcid'],
+            size = info['size'],
+            goldbean = 0,
+            silverbean = 0,
+            t = info['title'],
+            url = url,
+            type = 0,
+            o_page = "task",
+            o_taskid = 0,
+            class_id = 0,
+            database = "undefined",
+            time = "Wed May 30 2012 14:22:01 GMT 0800 (CST)",
+            noCacheIE = _now(),
+            verify_code = verifycode
+            )
+        DEBUG(pformat(params))
+        if verifycode and verifykey:
+            self.session.cookies = update_verifykey(self.session.cookies, verifykey)
+        DEBUG(pformat(self.session.cookies))
         r = self.session.get(self.TASK_COMMIT_URL, params=params)
         r.raise_for_status()
         DEBUG(pformat(r.content))
@@ -331,7 +339,7 @@ class LiXianAPI(object):
         r = self.session.post(self.TORRENT_UPDATE_URL, data={"random": self._random}, files=files)
         DEBUG(pformat(r.content))
         r.raise_for_status()
-        m = re.search("""btResult =(.*?);var btRtcode =""",
+        m = re.search("""btResult =(.+);</script>""",
                       r.content)
         if not m:
             m = re.search(r"""(parent\.edit_bt_list.*?);\s*</script>""", r.content)
@@ -408,7 +416,7 @@ class LiXianAPI(object):
                                                     g_net = 1,
                                                     p = 1,
                                                     uid = self.uid,
-                                                    noCacheIE = self._now))
+                                                    noCacheIE = _now()))
         r.raise_for_status()
         # content starts with \xef\xbb\xbf, what's that?
         function, args = parser_js_function_call(r.content[3:])
@@ -444,7 +452,7 @@ class LiXianAPI(object):
         tmp_ids = [str(x)+"_1" for x in task_ids]
         r = self.session.get(self.TASK_DELAY_URL % dict(
                             ids = ",".join(tmp_ids),
-                            cachetime = self._now))
+                            cachetime = _now()))
         r.raise_for_status()
         function, args = parser_js_function_call(r.content)
         DEBUG(pformat(args))
@@ -457,7 +465,7 @@ class LiXianAPI(object):
     def delete_task(self, task_ids):
         r = self.session.post(self.TASK_DELETE_URL, params = {
                                                       "type": "0",
-                                                      "t": self._now}
+                                                      "t": _now()}
                                                   , data = {
                                                       "databases": "0",
                                                       "taskids": ",".join(map(str, task_ids))})
@@ -474,7 +482,7 @@ class LiXianAPI(object):
         r = self.session.get(self.TASK_PAUSE_URL, params = {
                                                     "tid": ",".join(map(str, task_ids)),
                                                     "uid": self.uid,
-                                                    "noCacheIE": self._now
+                                                    "noCacheIE": _now()
                                                     })
         r.raise_for_status()
         DEBUG(pformat(r.content))
@@ -503,7 +511,7 @@ class LiXianAPI(object):
     def get_wait_time(self, task_id, key=None):
         params = dict(
             callback = "download_check_respo",
-            t = self._now,
+            t = _now(),
             taskid = task_id)
         if key:
             params["key"] = key
@@ -526,7 +534,7 @@ class LiXianAPI(object):
              nm_list=",".join((str(x) for x in nm_list)),
              bt_list=",".join((str(x) for x in bt_list)),
              uid=self.uid,
-             t=self._now)
+             t=_now())
         r = self.session.get(self.GET_FREE_URL, params=params)
         r.raise_for_status()
         function, args = parser_js_function_call(r.content)
@@ -542,7 +550,7 @@ class LiXianAPI(object):
              nm_list=",".join((str(x) for x in nm_list)),
              bt_list=",".join((str(x) for x in bt_list)),
              uid=self.uid,
-             noCacheIE=self._now,
+             noCacheIE=_now(),
              )
         r = self.session.get(self.GET_TASK_PROCESS, params=params)
         r.raise_for_status()
@@ -670,7 +678,7 @@ class LiXianAPI(object):
     def vod_get_play_url(self, url, bindex=-1):
         params = {
                 "callback": "jsonp1234567890",
-                "t": self._now,
+                "t": _now(),
                 "check": 0,
                 "url": url,
                 "format": 225536,  #225536:g, 282880:p
@@ -696,7 +704,7 @@ class LiXianAPI(object):
     def vod_get_list_pic(self, gcids):
         params = {
                 "callback": "jsonp1234567890",
-                "t": self._now,
+                "t": _now(),
                 "ids": "", # urlhash
                 "gcid": ",".join(gcids),
                 "rate": 0
@@ -716,7 +724,7 @@ class LiXianAPI(object):
         """
         params = {
                 "jsonp" : "jsonp1234567890",
-                "t" : self._now,
+                "t" : _now(),
                 "info_hash" : cid,
                 "req_list" : "/".join(map(str, bindex)),
                 }
@@ -731,7 +739,7 @@ class LiXianAPI(object):
     def vod_get_process(self, url_list):
         params = {
                 "callback": "jsonp1234567890",
-                "t": self._now,
+                "t": _now(),
                 "url_list": "####".join(url_list),
                 "id_list": "####".join(["list_bt_%d" % x for x in range(len(url_list))]),
                 "palform": 0,
@@ -751,7 +759,7 @@ class LiXianAPI(object):
         params = {
                 "action": "webfilemail_url_analysis",
                 "url": url,
-                "cachetime": self._now,
+                "cachetime": _now(),
                 }
         r = self.session.get(self.WEBFILEMAIL_INTERFACE_URL, params=params)
         r.raise_for_status()
@@ -779,7 +787,7 @@ class LiXianAPI(object):
     VIP_INFO_URL = "http://dynamic.vip.xunlei.com/login/asynlogin_contr/asynProxy/"
     def get_vip_info(self):
         params = {
-                "cachetime": self._now,
+                "cachetime": _now(),
                 "callback": "jsonp1234567890"
                 }
         r = self.session.get(self.VIP_INFO_URL, params=params)

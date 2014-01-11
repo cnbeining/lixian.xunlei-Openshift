@@ -2,7 +2,7 @@
 <html lang="zh-CN">
   <head>
     <meta charset="utf-8">
-    <title>{{ options.site_name }} 离线下载 - Permission Denied</title>
+    <title>{{ options.site_name }} 离线下载 - No Publicity</title>
     <meta name="keywords" content="Xunlei, Lixian, SinoSky, 迅雷, 迅雷离线, 资源分享, 下载, 离线下载" />
     <meta name="description" content="{% block desc %}{{ options.site_name }} 离线下载是一个基于迅雷离线服务的资源分享/下载网站。{% end %}" />
     <meta name="author" content="Binux">
@@ -40,13 +40,7 @@
     {% end %}
   </head>
   <body>
-    <h1>Permission Denied</h1>
-    <ul>
-      <li>You need <a href="/login">login</a> to access task list.</li>
-      {% if options.reg_key %}
-      <li>Registration is disabled by administrator.</li>
-      {% else %}
-      <li>Or you can <a href="/login">create</a> one.</li>
-      {% end %}
+    <h1>No Publicity</h1>
+    <p>Do NOT publicise this website, see <a href="https://www.sinosky.org/do-not-publicise-sinosky-lixian.html" target="_blank">this post</a> for more details.</p>
   </body>
 </html>

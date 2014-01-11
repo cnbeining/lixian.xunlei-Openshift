@@ -42,7 +42,7 @@ def cid_hash_file(path):
 thunder_filename_mask = "6131E45F00000000".decode("hex")
 def thunder_filename_encode(filename, encoding="gbk"):
     if isinstance(filename, unicode):
-        filename = filename.encode(encoding)
+        filename = filename.encode(encoding, 'ignore')
     result = ["01", ]
     for i, word in enumerate(filename):
         mask = thunder_filename_mask[i%len(thunder_filename_mask)]

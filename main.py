@@ -11,21 +11,23 @@ from tornado.ioloop import IOLoop, PeriodicCallback
 from tornado.options import define, options
 from tornado.httpserver import HTTPServer
 
-define("f", default="", help="config file path")
+define("f", default="config.conf", help="config file path")
 define("debug", default=True, help="debug mode")
-define("port", default=8880, help="the port tornado listen to")
-define("bind_ip", default="0.0.0.0", help="the bind ip")
-define("username", help="xunlei vip login name")
-define("password", help="xunlei vip password")
+define("port", default=8080, help="the port tornado listen to")
+define("bind_ip", default="127.0.0.1", help="the bind ip")
+define("username", default="", help="xunlei vip login name")
+define("password", default="", help="xunlei vip password")
 define("ga_account", default="", help="account of google analytics")
-define("site_name", default="LOLI.LU", help="site name used in description")
-define("cookie_secret", default="61oETzKXQAGaYdkL5gEmGeJJFuYh7EQnp2XdTP1o",
+define("baidu_account", default="", help="account of baidu tongji")
+define("site_name", default="SinoSky", help="site name used in description")
+define("site_subtitle", default=u"自由 平等 开放 分享", help="site subtitle used in description")
+define("cookie_secret", default="7bLv5TdHG6oQXlt1ORsnrfmbuBQcxGgU",
         help="key for HMAC")
 define("check_interval", default=60*60,
         help="the interval of checking login status")
 define("cache_enabled", default=True,
         help="enable mem cache")
-define("cross_userscript", default="http://userscripts.org/scripts/show/117745",
+define("cross_userscript", default="https://userscripts.org/scripts/show/161456",
         help="the web url of cross cookie userscirpt")
 define("cross_cookie_version", default="0.35",
         help="cross cookie user script version")
@@ -45,9 +47,9 @@ define("always_update_lixian_url", default=False,
         help="always update lixian url")
 define("database_echo", default=False,
         help="sqlalchemy database engine echo switch")
-define("database_engine", default="sqlite:///task_files.db",
+define("database_engine", default="sqlite://%s" % os.path.join(os.path.dirname(__file__), "task_files.db"),
         help="the database connect string for sqlalchemy")
-define("task_title_prefix", default="[loli.lu] ",
+define("task_title_prefix", default="lixian_ ",
         help="prefix of task")
 define("using_xss", default=False,
         help="use xss or cross-cookie")

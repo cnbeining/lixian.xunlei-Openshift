@@ -6,6 +6,11 @@ import traceback
 import thread
 import tornado
 from multiprocessing import Pipe
+import time
+import requests
+
+def _now():
+    return int(time.time()*1000)
 
 units = ['B', 'KB', 'MB', 'GB', 'TB', 'PB']
 def format_size(request, size):
@@ -49,7 +54,7 @@ class AsyncProcessMixin(object):
             except Exception, e:
                 logging.error(traceback.format_exc())
                 pipe.send(e)
-        
+
         self.ioloop.add_handler(self.pipe.fileno(),
                   self.async_callback(self.on_pipe_result, callback),
                   self.ioloop.READ)
@@ -65,3 +70,9 @@ class AsyncProcessMixin(object):
                 callback(ret)
         finally:
             self.ioloop.remove_handler(fd)
+
+def update_verifykey(cookiejar, verifykey):
+    _cookies = requests.cookies
+    _cookies.remove_cookie_by_name(cookiejar, 'VERIFY_KEY')
+    cookiejar.set_cookie(_cookies.create_cookie('VERIFY_KEY', verifykey, **{'domain': '.xunlei.com'}))
+    return cookiejar

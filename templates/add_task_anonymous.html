@@ -4,11 +4,11 @@
 <link rel="stylesheet" href="{{static_url('css/add_task.css')}}" type="text/css" media="screen" />
 <style>
 #addtask_head {
-	width:100%;
-	font-size:13px;
-    text-align: center;
-    line-height: 20px;
-    background-color: #ffc4c4;
+  width:100%;
+  font-size:13px;
+  text-align: center;
+  line-height: 20px;
+  background-color: #ffc4c4;
 }
 #addtask_head #message {
 }
@@ -18,11 +18,24 @@
 .addtask_form {
 
 }
+.addtask_button {
+  width: 340px;
+  padding-left: 195px;
+}
+.up {
+  margin:5px 0 3px 80px;
+  overflow:hidden;
+  width:530px;
+  padding:10px 0 10px 0;
+}
 .l {
-	width: 120px;
+  text-align:right;
+  float:left;
+  line-height: 28px;
 }
 .r {
-	width:560px;
+  float:right;
+  line-height: 26px;
 }
 </style>
 {% end %}
@@ -33,28 +46,36 @@
 </div>
 <div id="addtask_main">
 <form class="addtask_form" method="post" enctype="multipart/form-data" onsubmit="return on_submit();">
-	<div class="addtask_up">
-	<div class="l">任务下载地址</div>
-	<div class="r">
-		<input type="text" name="url" id="task_url" value="" placeholder="HTTP, ED2K or Magnet" style="width:330px;border-right:none;" onkeyup="on_url_change();" onPaste="on_url_change();" /><div class="bt_file">
-          <input type="file" name="btfile" class="file" onchange="on_file_change();" />
-          <div class="fake_button">
-            <button class="button file_button">种子上传</button>
-          </div>
-        </div>
-        {% if options.using_xsrf %}{% raw handler.xsrf_form_html() %}{% end %}
-        <input type="hidden" name="anonymous" value="1" />
-        <input class="button" name="b" type="submit" style="height:29px;" value="提交" />
-	</div>
-	</div>
+  <div class="up">
+  <div class="l">任务下载地址</div>
+  <div class="r">
+    <input type="text" name="url" id="task_url" value="" placeholder="HTTP, ED2K or Magnet" style="width:330px;border-right:none;" onkeyup="on_url_change();" onPaste="on_url_change();" />
+    <div class="bt_file">
+      <input type="file" name="btfile" class="file" onchange="on_file_change();" />
+      <div class="fake_button">
+        <button class="button file_button">种子上传</button>
+      </div>
+    </div>
+  </div>
+  </div>
 
-	<div class="addtask_button">
-	</div>
+  <div class="addtask_button">
+    <div class="CAPTCHA">
+      <img src="/verifycode.jpg?timestamp={{ timestamp }}" title="点击刷新验证码" onclick="this.src='/verifycode.jpg?timestamp='+new Date().getTime()" />
+      <input type="text" name="verifycode" id="verify_code" maxlength="4" value="" />
+    </div>
+    <div class="addtask_submit">
+      {% if options.using_xsrf %}{% raw handler.xsrf_form_html() %}{% end %}
+      <input type="hidden" name="anonymous" value="1" />
+      <input class="button" name="b" type="submit" value="提交" />
+      <button class="button" type="button" onclick="parent.$.fancybox.close();">取消</button>
+    </div>
+  </div>
 </form>
 </div>
 
 <div id="addtask_foot">
-	<!-- 后续说明？ -->
+  <!-- 后续说明？ -->
 </div>
 {% end %}
 

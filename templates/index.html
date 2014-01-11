@@ -1,23 +1,21 @@
 {% extends front.html %}
 
 {% block title %}
-{% if query.get("q") %}{{ options.site_name }} - {{ query.get("q") }} - 迅雷离线下载分享
-{% elif query.get("t") %}{{ options.site_name }} - {{ query.get("t") }} - 迅雷离线下载分享
-{% elif query.get("creator") %}{{ options.site_name }} - {{ email2name(query.get("creator")) }} - 迅雷离线下载分享
-{% else %}{{ options.site_name }} - 迅雷离线下载分享{% end %}
+{% if query.get("q") %}{{ query.get("q") }} - {{ options.site_name }} 离线下载
+{% elif query.get("t") %}{{ query.get("t") }} - {{ options.site_name }} 离线下载
+{% elif query.get("creator") %}{{ email2name(query.get("creator")) }} - {{ options.site_name }} 离线下载
+{% else %}{{ options.site_name }} 离线下载 - {{ options.site_subtitle }}{% end %}
 {% end %}
 
 {% block more_head %}
 <link rel="alternate" type="application/atom+xml" href="?feed=rss" />
 {% end %}
-
 {% block info %}
 {% if options.using_xss or handler.installed_userjs() %}
 {% raw modules.TagList() %}
 {% else %}
 {% include info.html %}
 {% end %}
-{% include author_info.html %}
 {% end %}
 
 {% block list %}
@@ -77,8 +75,8 @@
   });
 
   // fancybox
-  $(".get-lixian-url").fancybox({ width: 700 });
-  $(".edit-button").fancybox({ width: 700 , height: 250});
+  $(".get-lixian-url").fancybox({width: 700, onClosed: function(){location.reload();}});
+  $(".edit-button").fancybox({width: 700, height: 250, onClosed: function(){location.reload();}});
 
   </script>
 {% end %}

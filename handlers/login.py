@@ -9,18 +9,18 @@ from .base import BaseHandler
 class LoginHandler(BaseHandler, GoogleMixin):
     @asynchronous
     def get(self):
-       if self.get_argument("openid.mode", None):
-           self.get_authenticated_user(self.async_callback(self._on_auth))
-           return
-       if self.get_argument("logout", None):
-           self.clear_cookie("name")
-           self.clear_cookie("email")
-           self.redirect("/")
-           return
-       reg_key = self.get_argument("key", None)
-       if reg_key:
-           self.set_secure_cookie("reg_key", reg_key, expires_days=1)
-       self.authenticate_redirect()
+        if self.get_argument("openid.mode", None):
+            self.get_authenticated_user(self.async_callback(self._on_auth))
+            return
+        if self.get_argument("logout", None):
+            self.clear_cookie("name")
+            self.clear_cookie("email")
+            self.redirect("/")
+            return
+        reg_key = self.get_argument("key", None)
+        if reg_key:
+            self.set_secure_cookie("reg_key", reg_key, expires_days=1)
+        self.authenticate_redirect()
 
     def _on_auth(self, user):
         import logging

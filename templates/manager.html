@@ -1,6 +1,6 @@
 {% extends base.html %}
 
-{% block title %}{{ options.site_name }} - 后台管理 - 迅雷离线下载分享{% end %}
+{% block title %}{{ options.site_name }} 离线下载 - 后台管理{% end %}
 
 {% block head %}
 <style>
@@ -8,7 +8,7 @@ dd { font-weight: bold; margin-bottom: 5px; margin-left: 20px; }
 ul { list-style-type: disc; padding-left: 30px; }
 hr { margin-top: 10px; margin-bottom: 20px; }
 .message { margin: 5px 0; color: red; font-weight: bold; font-size: 200%; }
-</style>  
+</style>
 {% end %}
 
 {% block body %}
@@ -16,7 +16,7 @@ hr { margin-top: 10px; margin-bottom: 20px; }
 <section id="status">
   <dl>
     <dt>当前迅雷用户</dt>
-    <dd>{{ handler.task_manager.username }} - {{ handler.task_manager._xunlei.uid }} - 
+    <dd>{{ handler.task_manager.username }} - {{ handler.task_manager._xunlei.uid }} -
     <a href="/manager/recheck_login">{{ "已登录" if handler.task_manager.islogin else "未登录" }}</a></dd>
 
     <dt>当前uid</dt>
@@ -34,12 +34,12 @@ hr { margin-top: 10px; margin-bottom: 20px; }
   <ul>
       <li><form action="/manager/flush_mem_cache" method="POST"><button type="submit">刷新缓存</button></form></li>
       <li>重新抓取 <form action="/manager/refetch_finished_tasks" method="POST"><button type="submit">所有</button></form> / <form action="/manager/refetch_downloading_tasks" method><button>下载中</button></form> 的任务</li>
-        <form action="/manager/get_user_email">Get Email: 
+        <form action="/manager/get_user_email">Get Email:
           <input name="user_id" type="text" /><input type="submit" value="submit" />
         </form>
       </li>
       <li>
-        <form action="/manager/block_user" method="POST">Block: 
+        <form action="/manager/block_user" method="POST">Block:
           <input name="user_id" type="text" /><input type="submit" value="submit" />
         </form>
       </li>

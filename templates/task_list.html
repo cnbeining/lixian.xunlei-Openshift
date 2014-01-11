@@ -3,7 +3,7 @@
 {% for task in tasks %}
 <li class="task-item" data-task-id="{{ task.id }}">
   <div class="process-bar {{ task.status }}" style="width: {{ 100-task.process }}%"></div>
-  <a class="get-lixian-url iframe" href="/get_lixian_url?task_id={{ task.id }}" target="_blank" title="{{ task.taskname }}">
+  <a class="get-lixian-url iframe" href="/get_lixian_url?task_id={{ task.id }}" title="{{ task.taskname }}">
       <div class="tname"><span class="p1">{% if task.invalid %}* {% end %}{{ len(task.taskname) > 15 and task.taskname[:-15] or task.taskname }}</span><span class="p2">{{ len(task.taskname) > 15 and task.taskname[-15:] or "" }}</span></div>
   </a>
   <div class="info">
@@ -13,7 +13,7 @@
   <div class="clearfix"></div>
   <div class="task-item task-item-hover hidden" data-task-id="{{ task.id }}">
     <div class="process-bar {{ task.status }}" style="width: {{ 100-task.process }}%"></div>
-    <a class="get-lixian-url iframe" href="/get_lixian_url?task_id={{ task.id }}" target="_blank" title="{{ task.taskname }}">
+    <a class="get-lixian-url iframe" href="/get_lixian_url?task_id={{ task.id }}" title="{{ task.taskname }}">
         <div class="tname"><span class="p1">{% if task.invalid %}* {% end %}{{ len(task.taskname) > 15 and task.taskname[:-15] or task.taskname }}</span><span class="p2">{{ len(task.taskname) > 15 and task.taskname[-15:] or "" }}</span></div>
     </a>
     <div class="info">
@@ -25,7 +25,7 @@
         {% set uploader_id = email2id(task.creator) %}
         {% if (uploader_id and uploader_id == current_user_id) or isadmin %}<a href="/edit?task_id={{ task.id }}" class="edit-button iframe"> <div class="task-button"> 编辑 </div></a>{% end %}
         <span class="uploader">UP主: {% if uploader_id is not None %}<a href="/uploader/{{ uploader_id }}">{% end %}{{ email2name(task.creator) or task.creator or "unknow" }}{% if uploader_id is not None %}</a>{% end %}</span>
-      
+
         <span class="tags">TAGS: {% raw modules.TagsModule(task.tags) %}</span>
     </div>
     <div class="clearfix"></div>
@@ -34,8 +34,8 @@
 {% end %}
 {% if tasks %}
 <script>
-  $(".get-lixian-url").fancybox({width: 700});
-  $(".edit-button").fancybox({ width: 700 , height: 250});
+  $(".get-lixian-url").fancybox({width: 700, onClosed: function(){location.reload();}});
+  $(".edit-button").fancybox({width: 700, height: 250, onClosed: function(){location.reload();}});
   $(".task-item").hover(function() {
     $(this).find(".task-item-hover").show();
     resize_item($(this).find(".task-item-hover .tname").get(0));

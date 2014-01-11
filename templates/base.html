@@ -1,32 +1,50 @@
 <!DOCTYPE html>
-<html>
+<html lang="zh-CN">
 <head>
-<meta charset=utf-8 />
-<title>{% block title %}{{ options.site_name }} - 迅雷离线下载分享{% end %}</title>
-<!--[if lte IE 9]><script type="text/javascript">location = "/noie";</script><![endif]-->
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>{% block title %}{{ options.site_name }} 离线下载 - {{ options.site_subtitle }}{% end %}</title>
+<link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
 <link rel="stylesheet" href="{{static_url('css/reset.css')}}" type="text/css" />
 <link rel="stylesheet" href="{{static_url('css/base.css')}}" type="text/css" />
 {% block head %}{% end %}
-<meta name="keywords" content="迅雷 迅雷离线 ACG 资源分享 下载" />
-<meta name="description" content="{% block desc %}{{ options.site_name }} - 基于迅雷离线服务的ACG资源分享/下载网站{% end %}" />
+<meta name="keywords" content="Xunlei, Lixian, SinoSky, 迅雷, 迅雷离线, 资源分享, 下载, 离线下载" />
+<meta name="description" content="{% block desc %}{{ options.site_name }} 离线下载是一个基于迅雷离线服务的资源分享/下载网站。{% end %}" />
+<meta name="author" content="Binux">
+<meta name="generator" content="{{ options.site_name }}">
+<!-- lixian.xunlei(https://github.com/binux/lixian.xunlei) by binux(http://blog.binux.me/), licensed LGPL(https://www.gnu.org/licenses/lgpl.html). -->
+{% if options.baidu_account %}
+<script>
+var _hmt = _hmt || [];
+(function() {
+    var hm = document.createElement("script");
+    hm.src = "//hm.baidu.com/hm.js?{{ options.baidu_account }}";
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(hm, s);
+})();
+</script>
+{% end %}
 {% if options.ga_account %}
 <script type="text/javascript">
+(function(i, s, o, g, r, a, m) {
+    i['GoogleAnalyticsObject'] = r;
+    i[r] = i[r] || function() {
+        (i[r].q = i[r].q || []).push(arguments)
+    }, i[r].l = 1 * new Date();
+    a = s.createElement(o),
+    m = s.getElementsByTagName(o)[0];
+    a.async = 1;
+    a.src = g;
+    m.parentNode.insertBefore(a, m)
+})(window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga');
 
-  var _gaq = _gaq || [];
-  _gaq.push(['_setAccount', '{{ options.ga_account }}']);
-  _gaq.push(['_trackPageview']);
-
-  (function() {
-    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-  })();
-
+ga('create', '{{ options.ga_account }}', 'sinosky.org');
+ga('require', 'linkid', 'linkid.js');
+ga('send', 'pageview');
 </script>
 {% end %}
 </head>
 <body>
 {% block body %}{% end %}
-</body>
 {% block foot %}{% end %}
+</body>
 </html>

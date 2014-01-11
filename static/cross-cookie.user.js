@@ -1,16 +1,19 @@
 // ==UserScript==
-// @name       cross-cookie
-// @namespace  http://loli.lu/
-// @version    0.35
-// @description  cross-cookie for lixian.xunlei
-// @match http://127.0.0.1:8880/*
-// @match http://loli.lu/*
-// @match https://loli.lu/*
-// @match http://www.loli.lu/*
-// @match https://www.loli.lu/*
-// @match http://vip.xunlei.com/*
-// @copyright  2011-2012, Binux<17175297.hk@gmail.com>
-// @run-at     document-end
+// @name        cross-cookie
+// @namespace   https://dl.sinosky.org
+// @version     0.35
+// @description cross-cookie for SinoSky Lixian (https://dl.sinosky.org)
+// @match       http://127.0.0.1:8080/*
+// @match       https://127.0.0.1:8080/*
+// @match       http://dl.sinosky.org/*
+// @match       https://dl.sinosky.org/*
+// @match       http://dl.sinosky.us/*
+// @match       https://dl.sinosky.us/*
+// @match       http://vip.xunlei.com/*
+// @copyright   2011-2012, Binux <17175297.hk@gmail.com> (http://blog.binux.me/)
+// @generator   SinoSky (https://www.sinosky.org/)
+// @license     GNU Lesser General Public License (LGPL)
+// @run-at      document-end
 // ==/UserScript==
 
 var version = "0.35";
@@ -28,7 +31,7 @@ if ('loading' != document.readyState) {
         };
         document.cookie = "cross-cookie="+version+"; path=/";
     };
-    
+
     var hash = location.hash;
     if (hash.indexOf("#cross-cookie|") == 0) {
         var src = hash.split("|")[1];

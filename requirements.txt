@@ -1,0 +1,4 @@
+tornado
+requests
+pyparsing
+SQLAlchemy

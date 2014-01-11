@@ -1,30 +1,24 @@
 <dl id="download-help">
   <dd>1.</dd>
   <dt>
-  <div class="important">下载安装UserScript支持插件。</div>
+  <div class="important">下载安装 UserScript 支持插件。</div>
   <div>
       <b>Firefox:</b> <a href="https://addons.mozilla.org/zh-CN/firefox/addon/greasemonkey/" target="_blank">Greasemonkey</a> 或 <a href="https://addons.mozilla.org/zh-CN/firefox/addon/scriptish/" target="_blank">Scriptish</a><br />
       <b>Safari:</b> <a href="http://d.hatena.ne.jp/os0x/20100612/1276330696" target="_blank">NinjaKit</a> <br />
-      <b>Chrome:</b> 直接安装 <br />
+      <b>Chrome:</b> <a href="https://chrome.google.com/webstore/detail/tampermonkey/dhdgffkkebhmkfjojejmpbldmpobfkfo" target="_blank">Tampermonkey</a> <br />
   </div>
   </dt>
   <dd>2.</dd>
   <dt>
-  <div class="important">下载安装 跨站Cookie</div>
-  <div><a href="{{ options.cross_userscript }}" target="_blank">UserScirpt</a> / <a href="{{ options.cross_userscript_local }}" target="_blank">本地安装</a></div>
-  <a href="{{ options.cross_userscript }}" target="_blank" class="cross-cookie" data-version="{{ options.cross_cookie_version }}" style="padding: 3px; margin: 5px 0;">需要安装/升级</a>
+  <div class="important">下载安装跨站 Cookie 脚本。</div>
+  <div><a href="{{ options.cross_userscript_local }}" target="_blank">本地安装</a> / <a href="{{ options.cross_userscript }}" target="_blank">UserScirpt</a></div>
+  <a href="{{ options.cross_userscript_local }}" class="cross-cookie" data-version="{{ options.cross_cookie_version }}" style="padding: 3px; margin: 5px 0;">需要安装/升级</a>
   <div><b><a href="#disabled_cross_cookie" id="disable_user_script">我无须使用浏览器下载功能</a></b></div>
   </dt>
   <dd>3.</dd>
   <dt>
     <div class="important">开始下载吧！</div>
-    <div>您也可以使用Google账户登录后添加资源</div>
-    <div>教程： 
-      <a href="http://blog.4321.la/2011/12/526.html">Mac</a>
-      <a href="http://blog.binux.me/2011/12/howto_download_xunlei_offline_for_linux/">Linux</a>
-      <a href="http://blog.binux.me/2011/12/how_to_download_resource_from_loli-lu/">Win</a>
-    </div>
-    <div>源代码： <a href="https://github.com/binux/lixian.xunlei">GitHub</a></div>
+    <div>您也可以使用 Google 账户登录后添加资源。</div>
   </dt>
 </dl>
 <style>
@@ -32,7 +26,7 @@
 <div class="hidden">
   <div id="disabled_cross_cookie">
     <dl>
-      <dd>不安装跨站Cookie脚本，您将无法使用以下功能：</dd>
+      <dd>不安装跨站 Cookie 脚本，您将无法使用以下功能：</dd>
       <dt>
         <ul> <li>浏览器直接下载页面链接</li> </ul>
       </dt>
@@ -45,7 +39,7 @@
       <dt>
         <ul>
           <li><a href="javascript:set_cookie();">是的，我不需要使用浏览器下载功能</a></li>
-          <li><a href="{{ options.cross_userscript }}" target="_blank">否，我现在就去安装脚本</a></li>
+          <li><a href="{{ options.cross_userscript_local }}">否，我现在就要安装脚本</a></li>
         </ul>
       </dt>
     </dl>

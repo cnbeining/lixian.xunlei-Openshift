@@ -1,7 +1,8 @@
 # -*- encoding: utf-8 -*-
 # author: binux<17175297.hk@gmail.com>
 
-from time import time
+import time
+
 from tornado.web import RequestHandler
 from tornado.options import options
 
@@ -44,7 +45,7 @@ class BaseHandler(RequestHandler):
                     "id": 0,
                     "email": "bot@localhost",
                     "name": "bot",
-                    "group": "bot",
+                    "group": "admin",
                     "permission": 999,
                     }
         else:

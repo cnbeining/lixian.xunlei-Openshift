@@ -1,2 +1,6 @@
 User-agent: *
-Disallow: /
+Disallow: /login
+Disallow: /next
+Disallow: /export/
+
+Sitemap: https://dl.sinosky.org/sitemap.xml

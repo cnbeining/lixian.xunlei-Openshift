@@ -1,6 +1,7 @@
 # -*- encoding: utf-8 -*-
 # author: binux<17175297.hk@gmail.com>
 
+import os
 from tornado.web import HTTPError, UIModule
 from tornado.options import options
 from .base import BaseHandler
@@ -127,9 +128,9 @@ class TagListModule(UIModule):
 
 handlers = [
         (r"/", IndexHandler),
-        (r"/noie", NoIEHandler),
+        (r"/no-ie\.html", NoIEHandler),
         (r"/feed", FeedHandler),
-        #(r"/sitemap\.xml", SitemapHandler),
+        (r"/sitemap\.xml", SitemapHandler),
         (r"/tag/(.+)", TagHandler),
         (r"/uploader/(\d+)", UploadHandler),
         (r"/next", GetNextTasks),
