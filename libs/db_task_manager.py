@@ -448,7 +448,10 @@ class DBTaskManager(object):
 
         # step 4: commit & fetch result
         result = add_task_with_info(url, info, verifycode, verifykey)
-        if not result:
+        if result:
+            if result == -6: return (-6, "wrong verifycode")
+            if result == -7: return (-7, "no verifycode")
+        else:
             return (0, "error")
         self._update_task_list(5)
 

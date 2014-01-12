@@ -22,7 +22,7 @@
 	<div class="addtask_up">
 	<div class="addtask_l">任务下载地址</div>
 	<div class="addtask_r">
-    <input type="text" name="url" id="task_url" value="" placeholder="HTTP, ED2K or Magnet" style="width:230px;border-right:none;" onkeyup="on_url_change();" onPaste="on_url_change();" />
+    <input type="text" name="url" id="task_url" value="{{ values['url'] }}" placeholder="HTTP, ED2K or Magnet" style="width:230px;border-right:none;" onkeyup="on_url_change();" onPaste="on_url_change();" />
     <div class="bt_file">
       <input type="file" name="btfile" class="file" onchange="on_file_change();" />
       <div class="fake_button">
@@ -36,7 +36,7 @@
 	<div class="addtask_up">
 	<div class="addtask_l">任务标题</div>
 	<div class="addtask_r">
-		<input type="text" name="title" id="task_title" maxlength="256" value="" style="width:300px;" />
+		<input type="text" name="title" id="task_title" maxlength="256" value="{{ values['title'] }}" style="width:300px;" />
 		<span>(选填，默认任务文件名)</span>
 	</div>
 	</div>
@@ -44,7 +44,7 @@
 	<div class="addtask_up">
 	<div class="addtask_l">标签TAG</div>
 	<div class="addtask_r">
-		<input type="text" name="tags" id="task_tags" maxlength="1024" value="" style="width:300px;" />
+		<input type="text" name="tags" id="task_tags" maxlength="1024" value="{{ values['tags'] }}" style="width:300px;" />
 		<span>(选填，多个用逗号分开)</span>
 	</div>
 	</div>

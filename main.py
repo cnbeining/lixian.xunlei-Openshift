@@ -11,7 +11,9 @@ from tornado.ioloop import IOLoop, PeriodicCallback
 from tornado.options import define, options
 from tornado.httpserver import HTTPServer
 
-define("f", default="config.conf", help="config file path")
+path = os.path.join(os.path.dirname(__file__), "%s")
+
+define("f", default=path % "config.conf", help="config file path")
 define("debug", default=True, help="debug mode")
 define("port", default=8080, help="the port tornado listen to")
 define("bind_ip", default="127.0.0.1", help="the bind ip")
@@ -47,7 +49,7 @@ define("always_update_lixian_url", default=False,
         help="always update lixian url")
 define("database_echo", default=False,
         help="sqlalchemy database engine echo switch")
-define("database_engine", default="sqlite://%s" % os.path.join(os.path.dirname(__file__), "task_files.db"),
+define("database_engine", default="sqlite://%s" % (path % "task_files.db"),
         help="the database connect string for sqlalchemy")
 define("task_title_prefix", default="lixian_ ",
         help="prefix of task")
@@ -68,8 +70,8 @@ class Application(web.Application):
         from libs.vip_pool import VIPool
         settings = dict(
             debug=options.debug,
-            template_path=os.path.join(os.path.dirname(__file__), "templates"),
-            static_path=os.path.join(os.path.dirname(__file__), "static"),
+            template_path=path % "templates",
+            static_path=path % "static",
             cookie_secret=options.cookie_secret,
             login_url="/login",
 

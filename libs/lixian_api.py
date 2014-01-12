@@ -217,6 +217,8 @@ class LiXianAPI(object):
         r.raise_for_status()
         DEBUG(pformat(r.content))
         if "jsonp1234567890" in r.content:
+            if '"progress":-11' in r.content: return -6
+            if '"progress":-12' in r.content: return -7
             return True
         return False
 
@@ -284,6 +286,8 @@ class LiXianAPI(object):
         r.raise_for_status()
         DEBUG(pformat(r.content))
         if "ret_task" in r.content:
+            if "'-11','-11'" in r.content: return -6
+            if "'-12','-12'" in r.content: return -7
             return True
         return False
 
