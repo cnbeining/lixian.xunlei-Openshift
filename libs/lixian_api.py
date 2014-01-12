@@ -12,7 +12,7 @@ from random import random, sample
 from urlparse import urlparse
 from pprint import pformat
 from jsfunctionParser import parser_js_function_call
-from libs.util import _now, update_verifykey
+from libs.util import _now
 
 DEBUG = logging.debug
 
@@ -211,7 +211,7 @@ class LiXianAPI(object):
         data["from"] = 0
         DEBUG(pformat(data))
         if verifycode and verifykey:
-            self.session.cookies = update_verifykey(self.session.cookies, verifykey)
+            self.session.cookies = self.update_verifykey(self.session.cookies, verifykey)
         DEBUG(pformat(self.session.cookies))
         r = self.session.post(self.BT_TASK_COMMIT_URL, data=data)
         r.raise_for_status()
@@ -280,7 +280,7 @@ class LiXianAPI(object):
             )
         DEBUG(pformat(params))
         if verifycode and verifykey:
-            self.session.cookies = update_verifykey(self.session.cookies, verifykey)
+            self.session.cookies = self.update_verifykey(self.session.cookies, verifykey)
         DEBUG(pformat(self.session.cookies))
         r = self.session.get(self.TASK_COMMIT_URL, params=params)
         r.raise_for_status()
@@ -409,6 +409,12 @@ class LiXianAPI(object):
             return self.add_bt_task_by_path(url[7:])
         else:
             return self.add_batch_task([url, ])
+
+    def update_verifykey(self, cookiejar, verifykey):
+        _cookies = requests.cookies
+        _cookies.remove_cookie_by_name(cookiejar, 'VERIFY_KEY')
+        cookiejar.set_cookie(_cookies.create_cookie('VERIFY_KEY', verifykey, **{'domain': '.xunlei.com'}))
+        return cookiejar
 
     FILL_BT_LIST = "http://dynamic.cloud.vip.xunlei.com/interface/fill_bt_list"
     def _get_bt_list(self, tid, cid):

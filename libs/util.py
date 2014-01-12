@@ -7,10 +7,13 @@ import thread
 import tornado
 from multiprocessing import Pipe
 import time
-import requests
+from requests.api import get
 
 def _now():
     return int(time.time()*1000)
+
+def _get(url):
+    return get(url)
 
 units = ['B', 'KB', 'MB', 'GB', 'TB', 'PB']
 def format_size(request, size):
@@ -70,9 +73,3 @@ class AsyncProcessMixin(object):
                 callback(ret)
         finally:
             self.ioloop.remove_handler(fd)
-
-def update_verifykey(cookiejar, verifykey):
-    _cookies = requests.cookies
-    _cookies.remove_cookie_by_name(cookiejar, 'VERIFY_KEY')
-    cookiejar.set_cookie(_cookies.create_cookie('VERIFY_KEY', verifykey, **{'domain': '.xunlei.com'}))
-    return cookiejar

@@ -7,8 +7,7 @@ from tornado.web import HTTPError, UIModule, asynchronous, authenticated, Reques
 from tornado.options import options
 from functools import partial
 from base import BaseHandler
-from libs.util import AsyncProcessMixin, _now
-import requests
+from libs.util import AsyncProcessMixin, _now, _get
 import logging
 from pprint import pformat
 
@@ -113,7 +112,7 @@ class AddTaskHandler(BaseHandler, AsyncProcessMixin):
 class VerifycodeImageHandler(RequestHandler):
     def get(self):
         verifycode_image_url = 'http://verify2.xunlei.com/image?cachetime=%s' % _now()
-        r = requests.get(verifycode_image_url)
+        r = _get(verifycode_image_url)
         verifycode_image = r.content
         verifykey = r.cookies['VERIFY_KEY']
         self.set_header('Content-Type', 'image/jpeg')
