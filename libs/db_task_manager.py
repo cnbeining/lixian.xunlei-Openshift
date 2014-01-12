@@ -17,7 +17,7 @@ from libs.tools import url_unmask
 from libs.lixian_api import LiXianAPI, determin_url_type
 from libs.cache import mem_cache
 from tornado.options import options
-from requests import RequestException
+from requests.exceptions import RequestException
 
 TASK_ID_SAMPLE_SIZE = 10
 
