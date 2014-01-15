@@ -111,7 +111,7 @@ class AddTaskHandler(BaseHandler, AsyncProcessMixin):
 
 class VerifycodeImageHandler(RequestHandler):
     def get(self):
-        verifycode_image_url = 'http://verify2.xunlei.com/image?cachetime=%s' % _now()
+        verifycode_image_url = 'http://verify2.xunlei.com/image?t=MVA&cachetime=%s' % _now()
         r = _get(verifycode_image_url)
         verifycode_image = r.content
         verifykey = r.cookies['VERIFY_KEY']

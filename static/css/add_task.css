@@ -63,8 +63,8 @@ input, textarea {
 .addtask_button {
     clear: both;
     overflow: hidden;
-    width: 310px;
-    padding: 20px 0 0 190px;
+    width: 410px;
+    padding: 20px 0 0 150px;
 }
 .CAPTCHA {
     float: left;
@@ -73,8 +73,8 @@ input, textarea {
 .CAPTCHA img {
     margin-left: 5px;
     cursor: pointer;
-    width: 50px;
-    height: 20px;
+    width: 140px;
+    height: 56px;
 }
 .CAPTCHA input {
     width: 100px;
@@ -83,6 +83,7 @@ input, textarea {
 .addtask_submit {
     float: right;
     text-align: left;
+    padding-top: 13px;
 }
 .button {
     padding: 2px 7px;
