@@ -8,6 +8,8 @@
 <script type="text/javascript" src="{{ static_url('js/fancybox/jquery.fancybox-1.3.4.pack.js') }}"></script>
 <script src="{{ static_url('js/base64.js') }}"></script>
 <script type="text/javascript" src="{{ static_url('js/common.js') }}"></script>
+<script type="text/javascript" src="{{ static_url('js/jquery.cookie.js') }}"></script>
+<script type="text/javascript" src="{{ static_url('js/aria2jsonrpc.js') }}"></script>
 <script type="text/javascript">
   LE.taskname = {% raw json_encode(task.taskname) %};
   LE.links = function () {
@@ -38,7 +40,7 @@
   LS.share_url = {% raw json_encode(request.protocol+"://"+request.host+"/share/"+str(task.id)) %};
   LS.share_title = {% raw json_encode(task.taskname+" - "+options.site_name+u" 离线下载") %};
 </script>
-<link rel="stylesheet" href="{{static_url('js/fancybox/jquery.fancybox-1.3.4.css')}}" type="text/css" media="screen" />
+<link rel="stylesheet" href="{{ static_url('js/fancybox/jquery.fancybox-1.3.4.css') }}" type="text/css" media="screen" />
 <link rel="canonical" href="{{ request.protocol }}://{{ request.host }}/share/{{ task.id }}" />
 {% end %}
 
@@ -88,6 +90,7 @@
         <a class="export" href="/export/{{ url_escape(options.site_name) }}_idm_{{ task.id }}.ef2"><div class="task-button">IDM 导出</div></a>
         <a class="export" href="/export/{{ url_escape(options.site_name) }}_orbit_{{ task.id }}.olt"><div class="task-button">Orbit导出</div></a>
         <a class="export" href="/export/{{ url_escape(options.site_name) }}_aria2c_{{ task.id }}.down"><div class="task-button">aria2导出</div></a>
+        <a href="javascript:LE.to_aria2();"><div class="task-button">yaaw导出</div></a>
       </div>
     </div>
     <div class="clearfix"></div>
@@ -129,6 +132,7 @@
     </dl>
   </div>
 </div>
+<div id="tip-box" style="top: 5px;">导出完成</div>
 {% end %}
 
 {% block foot %}
@@ -221,6 +225,7 @@ $(document).ready(function(){
     });
   }
 });
+
 {% if options.using_xss %}
 document.write('<script type="text/javascript" src="/xssjs"><\/script>');
 {% end %}

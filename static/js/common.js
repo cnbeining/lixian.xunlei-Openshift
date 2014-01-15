@@ -24,6 +24,9 @@ var LE = {
   export: function(gen) {
     LE.show(gen(LE.taskname, LE.links(), LE.cookie));
   },
+  download: function(gen) {
+    gen(LE.taskname, LE.links(), LE.cookie);
+  },
   wget_links: function() {
     LE.export(function(taskname, links, cookie) {
       var str = "";
@@ -45,6 +48,17 @@ var LE = {
       return str;
     });
   },
+  to_aria2: function() {
+    LE.download(function(taskname, links, cookie) {
+      var path = $.cookie('aria2-jsonrpc') ? $.cookie('aria2-jsonrpc') : "http://127.0.0.1:6800/jsonrpc";
+      var aria2 = new ARIA2(path);
+      $.each(links, function(i, n) {
+        aria2.addUri(n.url, {out: n.title, header: 'Cookie: '+cookie});
+      });
+      $("#tip-box").show(0).delay(3000).hide(0);
+    });
+  },
+
   lixian_links: function() {
     LE.export(function(taskname, links, cookie) {
       var str = "";

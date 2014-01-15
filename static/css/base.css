@@ -314,18 +314,86 @@ a.cross-cookie { color: #c00 !important; text-decoration: none !important; paddi
 
 /* settings {{{ */
 #settings-details {
-  width: 500px;
-  height: 200px;
+  width: 600px;
 }
-#settings-details h3{
-  padding-bottom: 30px;
-  font-size: 1.3em;
+#settings-details #setting-main {
+  width: 550px;
+  margin: 10px 25px;
 }
-#settings-details p{
-
+#settings-details #setting-top {
+  overflow: hidden;
+  clear: both;
+  padding: 30px 0 20px 0;
 }
-#settings-details input{
-  width: 200px;
-  margin-left: 20px;
+#settings-details #setting-left {
+  float: left;
+  text-align: right;
+  width: 180px;
+  line-height: 28px;
+}
+#settings-details #setting-right {
+  float: right;
+  text-align: left;
+  width: 350px;
+}
+#settings-details #setting-right input {
+  border: 1px solid #CCC;
+  background: -webkit-gradient(linear,left top,left 15,from(white),color-stop(4%,#F9F9F9),to(white));
+  background: -moz-linear-gradient(top,white,#F9F9F9 1px,white 15px);
+  -moz-border-radius: 5px;
+  border-radius: 5px;
+  -webkit-border-radius: 5px;
+  width: 300px;
+  padding: 4px;
+  font-size: 13px;
+  height: 18px;
+}
+#settings-details #setting-bottom {
+  padding: 20px 0;
+  overflow: hidden;
+  clear: both;
+}
+#settings-details #setting-bottom #setting-buttons {
+  float: right;
+  width: 180px;
+}
+#settings-details #setting-bottom button {
+    padding: 2px 7px;
+    margin-left: 10px;
+    border-radius: 4px;
+    color: #606060;
+    border: solid 1px #B7B7B7;
+    background: white;
+    background: -webkit-gradient(linear,left top,left bottom,from(white),to(#EDEDED));
+    background: -moz-linear-gradient(top,white,#EDEDED);
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='white',endColorstr='#EDEDED');
+}
+#settings-details #setting-bottom button:hover {
+    background:#ededed;
+    background:-webkit-gradient(linear,left top,left bottom,from(#fff),to(#dcdcdc));
+    background:-moz-linear-gradient(top,#fff,#dcdcdc);
+    filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffffff',endColorstr='#dcdcdc');
+    cursor: pointer;
+}
+#settings-details #setting-bottom button:active {
+    color: #999;
+    background: -webkit-gradient(linear,left top,left bottom,from(#EDEDED),to(white));
+    background: -moz-linear-gradient(top,#EDEDED,white);
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#EDEDED',endColorstr='white');
 }
 /* }}} settings */
+
+#tip-box {
+  position: fixed;
+  top: 35px;
+  left: 45%;
+  z-index: 999;
+  background: #98C93A;
+  color: #fff;
+  padding: 3px 8px;
+  -moz-border-radius: 4px;
+  -webkit-border-radius:4px;
+  border-radius: 4px;
+  font-size: 13px;
+  display: none;
+}

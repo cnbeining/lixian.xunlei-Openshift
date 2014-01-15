@@ -6,6 +6,8 @@
 {% block more_head %}
 <script src="{{static_url('js/base64.js')}}"></script>
 <script type="text/javascript" src="{{static_url('js/common.js')}}"></script>
+<script type="text/javascript" src="{{ static_url('js/jquery.cookie.js') }}"></script>
+<script type="text/javascript" src="{{ static_url('js/aria2jsonrpc.js') }}"></script>
 <script type="text/javascript">
   LE.taskname = {% raw json_encode(task.taskname) %};
   LE.links = function () {
@@ -73,6 +75,7 @@
         <a href="/export/{{ url_escape(options.site_name) }}_idm_{{ task.id }}.ef2"><div class="task-button">IDM 导出</div></a>
         <a href="/export/{{ url_escape(options.site_name) }}_orbit_{{ task.id }}.olt"><div class="task-button">Orbit导出</div></a>
         <a href="/export/{{ url_escape(options.site_name) }}_aria2c_{{ task.id }}_.down"><div class="task-button">aria2导出</div></a>
+        <a href="javascript:LE.to_aria2();"><div class="task-button">yaaw导出</div></a>
       </div>
     </div>
     {% else %}
@@ -190,6 +193,7 @@
         return false;
     });
   }
+
   {% if options.using_xss %}
   document.write('<script type="text/javascript" src="/xssjs"><\/script>');
   {% end %}
