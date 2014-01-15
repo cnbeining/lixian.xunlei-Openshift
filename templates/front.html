@@ -80,12 +80,17 @@ body { min-width: 990px; }
   <div id="tip-box">导出完成</div>
 <script>
 $(document).ready(function() {
-  $("#tip-box").css("left", "40%").html("增加了一个 Aria2 JSON-RPC 模式的导出，需要先设置 Path").show(0).delay(5000).hide(0);
+  var showed = $.cookie('showed');
+  if (!showed || showed != 'true') {
+    $("#tip-box").css("left", "40%").html("增加了一个 Aria2 JSON-RPC 模式的导出，需要先设置 Path").show(0).delay(5000).hide(0);
+    $.cookie('showed', 'true', {expires: 1, path: '/', domain: '.{{ request.host }}'});
+  }
+
   var path = $.cookie('aria2-jsonrpc');
   if (path) {
     $("#aria2-jsonrpc:input").val(path);
   } else {
-    $.cookie('aria2-jsonrpc', 'http://127.0.0.1:6800/jsonrpc', {expires: 3650, path: '/', domain: ''});
+    $.cookie('aria2-jsonrpc', 'http://127.0.0.1:6800/jsonrpc', {expires: 3650, path: '/', domain: '.{{ request.host }}'});
   };
 });
 
@@ -97,7 +102,7 @@ $("#set-aria2-jsonrpc").click(function() {
     path = "http://127.0.0.1:6800/jsonrpc";
     $("#aria2-jsonrpc:input").val(path);
   }
-  $.cookie('aria2-jsonrpc', path, {expires: 3650, path: '/', domain: ''});
+  $.cookie('aria2-jsonrpc', path, {expires: 3650, path: '/', domain: '.{{ request.host }}'});
   $.fancybox.close();
 });
 
