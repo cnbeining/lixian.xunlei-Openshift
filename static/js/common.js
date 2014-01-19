@@ -55,7 +55,7 @@ var LE = {
       $.each(links, function(i, n) {
         aria2.addUri(n.url, {out: n.title, header: 'Cookie: '+cookie});
       });
-      $("#tip-box").show(0).delay(3000).hide(0);
+      $("#tip-box").css("left", "47%").html("导出完成").show(0).delay(3000).hide(0);
     });
   },
 

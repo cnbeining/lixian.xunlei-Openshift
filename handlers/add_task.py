@@ -8,10 +8,6 @@ from tornado.options import options
 from functools import partial
 from base import BaseHandler
 from libs.util import AsyncProcessMixin, _now, _get
-import logging
-from pprint import pformat
-
-DEBUG = logging.debug
 
 add_task_info_map = {
      0: u"添加任务失败",
@@ -67,9 +63,7 @@ class AddTaskHandler(BaseHandler, AsyncProcessMixin):
         render_path = "add_task_anonymous.html" if anonymous else "add_task.html"
         email = self.current_user['email']
         verifycode = self.get_argument("verifycode", None)
-        DEBUG(pformat('verifycode is %s.' % verifycode))
         verifykey = self.get_cookie("verifykey") or None
-        DEBUG(pformat('verifykey is %s.' % verifykey))
 
         if anonymous and not self.has_permission("add_anonymous_task"):
             raise HTTPError(403, "You might not have permission to add anonymous task.")

@@ -16,7 +16,7 @@ body { min-width: 990px; }
   <div id="layout-top">
     <div id="top-left">
     <ul class="menu">
-      <li class="last"><a href="https://github.com/jat001/lixian.xunlei" target="_blank">Open Source</a></li>
+      <li class="last"><a href="https://github.com/jat001/lixian.xunlei" target="_blank">GitHub</a></li>
       <li><a href="https://www.sinosky.org" target="_blank">博客</a></li>
       <li><a href="/feed">订阅</a></li>
       <li><a id="settings" href="#settings-details">设置</a></li>
@@ -36,7 +36,7 @@ body { min-width: 990px; }
       {% end %}
     </ul>
     </div>
-    <div id="search" style="width: 350px;">
+    <div id="search" style="width: 300px;">
       <form action="/">
         <div style="width: 276px; height: 28px; background-image: url('{{ static_url('img/qbar.png') }}'); background-repeat: no-repeat; display: inline-block;">
           <input type="text" maxlength="40" name="q" id="search-q" value="">
@@ -77,13 +77,13 @@ body { min-width: 990px; }
     </div>
     </div>
   </div>
-  <div id="tip-box">导出完成</div>
+  <div id="tip-box"></div>
 <script>
 $(document).ready(function() {
   var showed = $.cookie('showed');
-  if (!showed || showed != 'true') {
-    $("#tip-box").css("left", "40%").html("增加了一个 Aria2 JSON-RPC 模式的导出，需要先设置 Path").show(0).delay(5000).hide(0);
-    $.cookie('showed', 'true', {expires: 1, path: '/', domain: '.{{ request.host }}'});
+  if (!showed || showed != '20140118') {
+    $("#tip-box").css("left", "42%").html("小提示：如果登录失败，请挂代理访问 Google").show(0).delay(5000).hide(0);
+    $.cookie('showed', '20140118', {expires: 1, path: '/', domain: '.{{ request.host }}'});
   }
 
   var path = $.cookie('aria2-jsonrpc');

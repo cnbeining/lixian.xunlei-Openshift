@@ -381,7 +381,7 @@ class DBTaskManager(object):
         if isinstance(url, basestring):
             url_unmasked = url_unmask(url)
             if not isinstance(url_unmasked, unicode):
-                for each in ("utf8", "gbk", "shift_jis", ):
+                for each in ("utf8", "gbk", "shift_jis"):
                     try:
                         url = url_unmasked.decode(each)
                         break
