@@ -211,7 +211,7 @@ class LiXianAPI(object):
         data["from"] = 0
         DEBUG(pformat(data))
 #       if verifycode and verifykey:
-#           self.session.cookies = self.update_verifykey(self.session.cookies, 'VERIFY_KEY', verifykey)
+#           self.session.cookies = self.update_cookie(self.session.cookies, 'VERIFY_KEY', verifykey)
         # Thank @torta https://github.com/iambus/xunlei-lixian/pull/380
         userid = '0' * randint(0, 3000) + str(int(self.session.cookies['userid']))
         self.session.cookies = self.update_cookie(self.session.cookies, 'userid', userid)
