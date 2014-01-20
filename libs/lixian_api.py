@@ -8,7 +8,7 @@ import logging
 import requests
 import xml.sax.saxutils
 from hashlib import md5
-from random import random, sample
+from random import random, sample, randint
 from urlparse import urlparse
 from pprint import pformat
 from jsfunctionParser import parser_js_function_call
@@ -210,8 +210,11 @@ class LiXianAPI(object):
                 )
         data["from"] = 0
         DEBUG(pformat(data))
-        if verifycode and verifykey:
-            self.session.cookies = self.update_verifykey(self.session.cookies, verifykey)
+#       if verifycode and verifykey:
+#           self.session.cookies = self.update_verifykey(self.session.cookies, 'VERIFY_KEY', verifykey)
+        # Thank @torta https://github.com/iambus/xunlei-lixian/pull/380
+        userid = '0' * randint(0, 3000) + str(int(self.session.cookies['userid']))
+        self.session.cookies = self.update_cookie(self.session.cookies, 'userid', userid)
         DEBUG(pformat(self.session.cookies))
         r = self.session.post(self.BT_TASK_COMMIT_URL, data=data)
         r.raise_for_status()
@@ -279,8 +282,11 @@ class LiXianAPI(object):
             verify_code = verifycode
             )
         DEBUG(pformat(params))
-        if verifycode and verifykey:
-            self.session.cookies = self.update_verifykey(self.session.cookies, verifykey)
+#       if verifycode and verifykey:
+#           self.session.cookies = self.update_cookie(self.session.cookies, 'VERIFY_KEY', verifykey)
+        # Thank @torta https://github.com/iambus/xunlei-lixian/pull/380
+        userid = '0' * randint(0, 3000) + str(int(self.session.cookies['userid']))
+        self.session.cookies = self.update_cookie(self.session.cookies, 'userid', userid)
         DEBUG(pformat(self.session.cookies))
         r = self.session.get(self.TASK_COMMIT_URL, params=params)
         r.raise_for_status()
@@ -410,10 +416,10 @@ class LiXianAPI(object):
         else:
             return self.add_batch_task([url, ])
 
-    def update_verifykey(self, cookiejar, verifykey):
+    def update_cookie(self, cookiejar, cookie_name, cookie_value):
         _cookies = requests.cookies
-        _cookies.remove_cookie_by_name(cookiejar, 'VERIFY_KEY')
-        cookiejar.set_cookie(_cookies.create_cookie('VERIFY_KEY', verifykey, **{'domain': '.xunlei.com'}))
+        _cookies.remove_cookie_by_name(cookiejar, cookie_name)
+        cookiejar.set_cookie(_cookies.create_cookie(cookie_name, cookie_value, **{'domain': '.xunlei.com'}))
         return cookiejar
 
     FILL_BT_LIST = "http://dynamic.cloud.vip.xunlei.com/interface/fill_bt_list"

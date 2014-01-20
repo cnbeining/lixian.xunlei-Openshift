@@ -64,7 +64,8 @@ input, textarea {
     clear: both;
     overflow: hidden;
     width: 410px;
-    padding: 20px 0 0 150px;
+/*  padding: 20px 0 0 150px; */
+    padding: 20px 0 0 90px;
 }
 .CAPTCHA {
     float: left;
