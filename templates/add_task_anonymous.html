@@ -20,8 +20,8 @@
 }
 .addtask_button {
   width: 410px;
-/* padding-left: 195px; */
-  padding-left: 125px;
+  padding-left: 195px;
+/* padding-left: 125px; */
 }
 .up {
   margin: 5px 0 3px 80px;
@@ -61,10 +61,10 @@
   </div>
 
   <div class="addtask_button">
-<!-- <div class="CAPTCHA">
+    <div class="CAPTCHA">
       <img src="/verifycode.jpg?timestamp={{ timestamp }}" title="点击刷新验证码" onclick="this.src='/verifycode.jpg?timestamp='+new Date().getTime()" />
       <input type="text" name="verifycode" id="verify_code" maxlength="4" value="" />
-    </div> -->
+    </div>
     <div class="addtask_submit">
       {% if options.using_xsrf %}{% raw handler.xsrf_form_html() %}{% end %}
       <input type="hidden" name="anonymous" value="1" />

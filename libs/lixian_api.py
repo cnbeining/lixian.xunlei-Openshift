@@ -210,11 +210,11 @@ class LiXianAPI(object):
                 )
         data["from"] = 0
         DEBUG(pformat(data))
-#       if verifycode and verifykey:
-#           self.session.cookies = self.update_cookie(self.session.cookies, 'VERIFY_KEY', verifykey)
+        if verifycode and verifykey:
+            self.session.cookies = self.update_cookie(self.session.cookies, 'VERIFY_KEY', verifykey)
         # Thank @torta https://github.com/iambus/xunlei-lixian/pull/380
-        userid = '0' * randint(0, 3000) + str(int(self.session.cookies['userid']))
-        self.session.cookies = self.update_cookie(self.session.cookies, 'userid', userid)
+#       userid = '0' * randint(0, 3000) + str(int(self.session.cookies['userid']))
+#       self.session.cookies = self.update_cookie(self.session.cookies, 'userid', userid)
         DEBUG(pformat(self.session.cookies))
         r = self.session.post(self.BT_TASK_COMMIT_URL, data=data)
         r.raise_for_status()
@@ -282,11 +282,11 @@ class LiXianAPI(object):
             verify_code = verifycode
             )
         DEBUG(pformat(params))
-#       if verifycode and verifykey:
-#           self.session.cookies = self.update_cookie(self.session.cookies, 'VERIFY_KEY', verifykey)
+        if verifycode and verifykey:
+            self.session.cookies = self.update_cookie(self.session.cookies, 'VERIFY_KEY', verifykey)
         # Thank @torta https://github.com/iambus/xunlei-lixian/pull/380
-        userid = '0' * randint(0, 3000) + str(int(self.session.cookies['userid']))
-        self.session.cookies = self.update_cookie(self.session.cookies, 'userid', userid)
+#       userid = '0' * randint(0, 3000) + str(int(self.session.cookies['userid']))
+#       self.session.cookies = self.update_cookie(self.session.cookies, 'userid', userid)
         DEBUG(pformat(self.session.cookies))
         r = self.session.get(self.TASK_COMMIT_URL, params=params)
         r.raise_for_status()
