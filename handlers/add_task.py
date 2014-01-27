@@ -3,7 +3,7 @@
 
 import re
 from tornado import gen
-from tornado.web import HTTPError, UIModule, asynchronous, authenticated, RequestHandler
+from tornado.web import HTTPError, UIModule, asynchronous, authenticated
 from tornado.options import options
 from functools import partial
 from base import BaseHandler
@@ -87,31 +87,30 @@ class AddTaskHandler(BaseHandler, AsyncProcessMixin):
         ))
 
         if result == 1:
+            self.user_manager.incr_add_task_limit(self.current_user["email"])
             if task:
-                self.write("""<script>
+                self.finish("""<script>
     parent.$('#fancybox-content').css({height: "350px"});
 	parent.$.fancybox.resize();
     location='/get_lixian_url?task_id=%d'
 </script>""" % task.id)
             else:
-                self.write("<script>top.location='/'</script>")
-            self.user_manager.incr_add_task_limit(self.current_user["email"])
-            self.finish()
+                self.finish("<script>top.location='/'</script>")
         else:
             if anonymous:
                 self.render("add_task_anonymous.html", message=add_task_info_map.get(result, u"未知错误"), timestamp=_now(), values=values_map)
             else:
                 self.render("add_task.html", message=add_task_info_map.get(result, u"未知错误"), timestamp=_now(), values=values_map)
 
-class VerifycodeImageHandler(RequestHandler):
+class VerifycodeImageHandler(BaseHandler):
     def get(self):
         verifycode_image_url = 'http://verify2.xunlei.com/image?t=MVA&cachetime=%s' % _now()
         r = _get(verifycode_image_url)
         verifycode_image = r.content
         verifykey = r.cookies['VERIFY_KEY']
         self.set_header('Content-Type', 'image/jpeg')
-        self.set_cookie('verifykey', verifykey, domain=self.request.host, path='/')
-        self.write(verifycode_image)
+        self.set_cookie('verifykey', verifykey, domain=self.hostname, path='/')
+        self.finish(verifycode_image)
 
 handlers = [
         (r"/add_task(_anonymous)?", AddTaskHandler),

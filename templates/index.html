@@ -1,10 +1,10 @@
 {% extends front.html %}
 
 {% block title %}
-{% if query.get("q") %}{{ query.get("q") }} - {{ options.site_name }} 离线下载
-{% elif query.get("t") %}{{ query.get("t") }} - {{ options.site_name }} 离线下载
-{% elif query.get("creator") %}{{ email2name(query.get("creator")) }} - {{ options.site_name }} 离线下载
-{% else %}{{ options.site_name }} 离线下载 - {{ options.site_subtitle }}{% end %}
+{% if query.get("q") %}{{ query.get("q") }} - {{ options.site_name }}
+{% elif query.get("t") %}{{ query.get("t") }} - {{ options.site_name }}
+{% elif query.get("creator") %}{{ email2name(query.get("creator")) }} - {{ options.site_name }}
+{% else %}{{ options.site_name }} | {{ options.site_subtitle }}{% end %}
 {% end %}
 
 {% block more_head %}

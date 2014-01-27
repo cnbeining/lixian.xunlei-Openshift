@@ -3,4 +3,4 @@ Disallow: /login
 Disallow: /next
 Disallow: /export/
 
-Sitemap: https://dl.sinosky.org/sitemap.xml
+Sitemap: http://ezdl.it/sitemap.xml

@@ -133,10 +133,10 @@ handlers = [
         (r"/sitemap\.xml", SitemapHandler),
         (r"/tag/(.+)", TagHandler),
         (r"/uploader/(\d+)", UploadHandler),
-        (r"/next", GetNextTasks),
+        (r"/next", GetNextTasks)
 ]
 ui_modules = {
         "TaskItems": TaskItemsModule,
         "TagsModule": TagsModule,
-        "TagList": TagListModule,
+        "TagList": TagListModule
 }

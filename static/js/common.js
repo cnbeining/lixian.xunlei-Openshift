@@ -50,12 +50,17 @@ var LE = {
   },
   to_aria2: function() {
     LE.download(function(taskname, links, cookie) {
-      var path = $.cookie('aria2-jsonrpc') ? $.cookie('aria2-jsonrpc') : "http://127.0.0.1:6800/jsonrpc";
-      var aria2 = new ARIA2(path);
-      $.each(links, function(i, n) {
-        aria2.addUri(n.url, {out: n.title, header: 'Cookie: '+cookie});
-      });
-      $("#tip-box").css("left", "47%").html("导出完成").show(0).delay(3000).hide(0);
+      var path = $.cookie('aria2-jsonrpc');
+      if (path && path != '') {
+        var aria2 = new ARIA2(path);
+        $.each(links, function(i, n) {
+          aria2.addUri(n.url, {out: n.title, header: 'Cookie: '+cookie});
+        });
+        $("#tip-box").css("left", "48%").html("导出完成").show(0).delay(3000).hide(0);
+      } else {
+        $("#tip-box").css("left", "44%").html("尚未设置 Aria2 JSON-RPC Path").show(0).delay(3000).hide(0);
+      }
+
     });
   },
 

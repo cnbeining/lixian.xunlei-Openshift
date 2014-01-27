@@ -51,7 +51,7 @@
 
 	<div class="addtask_button">
     <div class="CAPTCHA">
-      <img src="/verifycode.jpg?timestamp={{ timestamp }}" title="点击刷新验证码" onclick="this.src='/verifycode.jpg?timestamp='+new Date().getTime()" />
+      <img src="/verifycode.jpg?timestamp={{ timestamp }}" alt="验证码" title="点击刷新验证码" onclick="this.src='/verifycode.jpg?timestamp='+new Date().getTime()" />
       <input type="text" name="verifycode" id="verify_code" maxlength="4" value="" />
     </div>
     <div class="addtask_submit">

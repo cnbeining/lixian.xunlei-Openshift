@@ -160,9 +160,9 @@ class orbitExportHandler(BaseHandler):
 
 handlers = [
         (r"/get_lixian_url", GetLiXianURLHandler),
-        (r"/export/"+options.site_name+"_idm_(\d+).*?\.ef2", IDMExportHandler),
-        (r"/export/"+options.site_name+"_aria2c_(\d+).*?\.down", aria2cExportHandler),
-        (r"/export/"+options.site_name+"_orbit_(\d+).*?\.olt", orbitExportHandler),
+        (r"/export/lixian_idm_(\d+).*?\.ef2", IDMExportHandler),
+        (r"/export/lixian_aria2c_(\d+).*?\.down", aria2cExportHandler),
+        (r"/export/lixian_orbit_(\d+).*?\.olt", orbitExportHandler),
         (r"/share/(\d+)", ShareHandler),
         (r"/xss", XSSDoneHandler),
         (r"/xssjs", XSSJSHandler),

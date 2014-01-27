@@ -120,7 +120,7 @@ class ManagerIndexHandler(BaseHandler):
         return self.user_manager.reset_all_add_task_limit()
 
 handlers = [
-        (r"/manager/?(\w*)", ManagerIndexHandler),
+        (r"/manager/?(\w*)", ManagerIndexHandler)
 ]
 ui_modules = {
 }

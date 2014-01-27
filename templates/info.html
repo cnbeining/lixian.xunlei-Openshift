@@ -21,6 +21,9 @@
     <div>您也可以使用 Google 账户登录后添加资源。</div>
   </dt>
 </dl>
+<div id="author-info">
+  View on <a href="https://github.com/jat001/lixian.xunlei" target="_blank" id="github">GitHub</a> | <a href="http://www.miitbeian.gov.cn" target="_blank">鲁ICP备14000934号</a>
+</div>
 <style>
 </style>
 <div class="hidden">
@@ -48,9 +51,8 @@
 <script>
   $("#disable_user_script").fancybox();
   function set_cookie() {
-    var date=new Date();
-    date.setTime(date.getTime()+7*24*3600*1000);
-    document.cookie="cross-cookie=disabled;expires="+date.toGMTString();
+    var host = '.' + location.host;
+    $.cookie('cross-cookie', 'disabled', {expires: 30, path: '/', domain: host});
     location.reload();
   }
 </script>

@@ -1,17 +1,21 @@
 // ==UserScript==
 // @name        cross-cookie
-// @namespace   https://dl.sinosky.org
+// @namespace   http://ezdl.it
 // @version     0.35
-// @description cross-cookie for SinoSky Lixian (https://dl.sinosky.org)
+// @description cross-cookie for Easily download it (http://ezdl.it)
 // @match       http://127.0.0.1:8080/*
 // @match       https://127.0.0.1:8080/*
 // @match       http://dl.sinosky.org/*
 // @match       https://dl.sinosky.org/*
 // @match       http://dl.sinosky.us/*
 // @match       https://dl.sinosky.us/*
+// @match       http://ezdl.it/*
+// @match       https://ezdl.it/*
+// @match       http://www.ezdl.it/*
+// @match       https://www.ezdl.it/*
 // @match       http://vip.xunlei.com/*
-// @copyright   2011-2012, Binux <17175297.hk@gmail.com> (http://blog.binux.me/)
-// @generator   SinoSky (https://www.sinosky.org/)
+// @copyright   2011-2012, Binux <17175297.hk@gmail.com> (http://blog.binux.me)
+// @generator   SinoSky (https://www.sinosky.org)
 // @license     GNU Lesser General Public License (LGPL)
 // @run-at      document-end
 // ==/UserScript==

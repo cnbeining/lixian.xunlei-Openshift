@@ -21,8 +21,8 @@ define("username", default="", help="xunlei vip login name")
 define("password", default="", help="xunlei vip password")
 define("ga_account", default="", help="account of google analytics")
 define("baidu_account", default="", help="account of baidu tongji")
-define("site_name", default="SinoSky", help="site name used in description")
-define("site_subtitle", default=u"自由 平等 开放 分享", help="site subtitle used in description")
+define("site_name", default=u"轻松下", help="site name used in description")
+define("site_subtitle", default=u"Easily download it", help="site subtitle used in description")
 define("cookie_secret", default="7bLv5TdHG6oQXlt1ORsnrfmbuBQcxGgU",
         help="key for HMAC")
 define("check_interval", default=60*60,
