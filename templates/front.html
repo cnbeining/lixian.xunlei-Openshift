@@ -17,7 +17,6 @@ body { min-width: 990px; }
     <div id="top-left">
     <ul class="menu">
       <li class="last"><a href="https://www.sinosky.org" target="_blank">SinoSky</a></li>
-      <li><a href="/feed">订阅</a></li>
       <li><a id="settings" href="#settings-details">设置</a></li>
       <li><a href="/">首页</a></li>
     </ul>
@@ -67,11 +66,28 @@ body { min-width: 990px; }
     <div id="settings-details">
     <div id="setting-main">
       <div id="setting-top">
-        <div id="setting-left">Aria2 JSON-RPC Path</div>
-        <div id="setting-right">
-          <input type="text" id="aria2-jsonrpc" value="http://127.0.0.1:6800/jsonrpc" />
+
+        <div class="setting-detail">
+          <div class="setting-left">Aria2 JSON-RPC Path</div>
+          <div class="setting-right">
+            <input type="text" id="aria2-jsonrpc" value="http://127.0.0.1:6800/jsonrpc" />
+          </div>
         </div>
+
+        <div class="setting-detail">
+          <div class="setting-left">是否使用加密连接</div>
+          <div class="setting-right">
+            <select id="ssl">
+              <option value="default" id="ssl-default">默认</option>
+              <option value="true" id="ssl-true">是</option>
+              <option value="false" id="ssl-false">否</option>
+            </select>
+            <div id="ssl-notice">请使用最新版的现代浏览器<br />以获得 <a href="https://zh.wikipedia.org/wiki/SPDY" target="_blank">SPDY</a> 协议的支持。</div>
+          </div>
+        </div>
+
       </div>
+
       <div id="setting-bottom">
         <div id="setting-buttons">
           <button type="submit" id="set-aria2-jsonrpc">保存</button>
@@ -93,6 +109,23 @@ $(document).ready(function() {
     $.cookie('showed', '20140126', {expires: 1, path: '/', domain: host});
   }
 */
+
+  var ssl = $.cookie('ssl');
+  if (ssl) {
+    if (ssl == 'true') {
+      if (location.protocol == 'http:') {
+        location.href = location.href.replace(/http/i, 'https');
+      } else {
+        $('#ssl-true').attr('selected', 'selected');
+      }
+    } else if (ssl == 'false') {
+      if (location.protocol == 'https:') {
+        location.href = location.href.replace(/https/i, 'http');
+      } else {
+        $('#ssl-false').attr('selected', 'selected');
+      }
+    }
+  }
 
   var path = $.cookie('aria2-jsonrpc');
   if (path && path != '') {
@@ -121,6 +154,27 @@ $('#set-aria2-jsonrpc').click(function() {
     $('#aria2-jsonrpc:input').val(path);
   }
   $.cookie('aria2-jsonrpc', path, {expires: 3650, path: '/', domain: host});
+
+  var ssl = $('#ssl option:selected').val();
+  switch (ssl) {
+    case 'true':
+      $.cookie('ssl', 'true', {expires: 3650, path: '/', domain: host});
+      if (location.protocol == 'http:') {
+        location.href = location.href.replace(/http/i, 'https');
+      }
+      break;
+
+    case 'false':
+      $.cookie('ssl', 'false', {expires: 3650, path: '/', domain: host});
+      if (location.protocol == 'https:') {
+        location.href = location.href.replace(/https/i, 'http');
+      }
+      break;
+
+    default:
+      $.removeCookie('ssl', {path: '/', domain: host});
+  }
+
   $.fancybox.close();
 });
 
