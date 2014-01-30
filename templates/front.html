@@ -105,31 +105,33 @@ $(document).ready(function() {
 /*
   var showed = $.cookie('showed');
   if (!showed || showed != '20140126') {
-    $("#tip-box").css("left", "45%").html("").show(0).delay(5000).hide(0);
+    $('#tip-box').css('left', '45%').html('').show(0).delay(5000).hide(0);
     $.cookie('showed', '20140126', {expires: 1, path: '/', domain: host});
   }
 */
 
   var ssl = $.cookie('ssl');
-  if (ssl) {
-    if (ssl == 'true') {
+  switch (ssl) {
+    case 'true':
       if (location.protocol == 'http:') {
         location.href = location.href.replace(/http/i, 'https');
       } else {
         $('#ssl-true').attr('selected', 'selected');
       }
-    } else if (ssl == 'false') {
+      break;
+
+    case 'false':
       if (location.protocol == 'https:') {
         location.href = location.href.replace(/https/i, 'http');
       } else {
         $('#ssl-false').attr('selected', 'selected');
       }
-    }
+      break;
   }
 
   var path = $.cookie('aria2-jsonrpc');
-  if (path && path != '') {
-    $("#aria2-jsonrpc:input").val(path);
+  if (path) {
+    $('#aria2-jsonrpc:input').val(path);
   }
 
   var searchID = '#layout-top #search-input';
@@ -149,7 +151,7 @@ $('#settings').fancybox();
 
 $('#set-aria2-jsonrpc').click(function() {
   var path = $('#aria2-jsonrpc').val();
-  if (!path || path == '') {
+  if (!path) {
     path = 'http://127.0.0.1:6800/jsonrpc';
     $('#aria2-jsonrpc:input').val(path);
   }
