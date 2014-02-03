@@ -13,13 +13,13 @@ class LoginHandler(BaseHandler, GoogleMixin):
             self.get_authenticated_user(self.async_callback(self._on_auth))
             return
         if self.get_argument("logout", None):
-            self.clear_cookie("name", domain=self.hostname, path='/')
-            self.clear_cookie("email", domain=self.hostname, path='/')
+            self.clear_cookie("name", domain='.%s' % self.request.host, path='/')
+            self.clear_cookie("email", domain='.%s' % self.request.host, path='/')
             self.redirect("/")
             return
         reg_key = self.get_argument("key", None)
         if reg_key:
-            self.set_secure_cookie("reg_key", reg_key, expires_days=1, domain=self.hostname, path='/')
+            self.set_secure_cookie("reg_key", reg_key, expires_days=1, domain='.%s' % self.request.host, path='/')
         self.authenticate_redirect()
 
     def _on_auth(self, user):
@@ -42,8 +42,8 @@ class LoginHandler(BaseHandler, GoogleMixin):
                 self.finish("Registry is Disabled by Administrator.")
                 return
         self.user_manager.update_user(user["email"], user["name"])
-        self.set_secure_cookie("name", user["name"], expires_days=90, domain=self.hostname, path='/')
-        self.set_secure_cookie("email", user["email"], expires_days=90, domain=self.hostname, path='/')
+        self.set_secure_cookie("name", user["name"], expires_days=90, domain='.%s' % self.request.host, path='/')
+        self.set_secure_cookie("email", user["email"], expires_days=90, domain='.%s' % self.request.host, path='/')
         self.redirect("/")
 
 handlers = [

@@ -63,7 +63,7 @@ class AddTaskHandler(BaseHandler, AsyncProcessMixin):
         render_path = "add_task_anonymous.html" if anonymous else "add_task.html"
         email = self.current_user['email']
         verifycode = self.get_argument("verifycode", None)
-        verifykey = self.get_cookie("verifykey") or None
+        verifykey = self.get_cookie("verifykey")
 
         if anonymous and not self.has_permission("add_anonymous_task"):
             raise HTTPError(403, "You might not have permission to add anonymous task.")
@@ -109,7 +109,7 @@ class VerifycodeImageHandler(BaseHandler):
         verifycode_image = r.content
         verifykey = r.cookies['VERIFY_KEY']
         self.set_header('Content-Type', 'image/jpeg')
-        self.set_cookie('verifykey', verifykey, domain=self.hostname, path='/')
+        self.set_cookie('verifykey', verifykey, domain='.%s' % self.request.host, path='/')
         self.finish(verifycode_image)
 
 handlers = [

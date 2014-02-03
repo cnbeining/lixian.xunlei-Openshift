@@ -21,9 +21,17 @@ class IndexHandler(BaseHandler):
         view_all = self.has_permission("view_invalid")
         tasks = self.task_manager.get_task_list(q=q, limit=TASK_LIMIT, all=view_all)
         if feed:
-            self.set_header("Content-Type", "application/atom+xml")
+            self.set_header("Content-Type", "application/atom+xml; charset=UTF-8")
             self.render("feed.xml", tasks=tasks)
         else:
+            ssl = self.get_cookie("ssl")
+            if ssl:
+                if ssl == "true" and self.request.protocol == "http":
+                    self.redirect("https://%s" % self.request.host)
+                    return
+                elif ssl == "false" and self.request.protocol == "https":
+                    self.redirect("http://%s" % self.request.host)
+                    return
             self.render("index.html", tasks=tasks, query={"q": q})
 
 class FeedHandler(BaseHandler):

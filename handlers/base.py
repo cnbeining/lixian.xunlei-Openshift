@@ -66,7 +66,3 @@ class BaseHandler(RequestHandler):
     def has_permission(self, permission):
         email = self.current_user and self.current_user["email"] or None
         return self.user_manager.check_permission(email, permission)
-
-    @property
-    def hostname(self):
-        return '.%s' % self.request.host
