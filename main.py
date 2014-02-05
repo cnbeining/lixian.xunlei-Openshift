@@ -14,7 +14,7 @@ from tornado.httpserver import HTTPServer
 path = os.path.join(os.path.dirname(__file__), "%s")
 
 define("f", default=path % "config.conf", help="config file path")
-define("debug", default=True, help="debug mode")
+define("debug", default=False, help="debug mode")
 define("port", default=8080, help="the port tornado listen to")
 define("bind_ip", default="127.0.0.1", help="the bind ip")
 define("username", default="", help="xunlei vip login name")
@@ -74,9 +74,11 @@ class Application(web.Application):
             static_path=path % "static",
             cookie_secret=options.cookie_secret,
             login_url="/login",
-
+            autoreload=True,
+            gzip=True,
+            serve_traceback=False,
             ui_modules=ui_modules,
-            ui_methods=ui_methods,
+            ui_methods=ui_methods
         )
         super(Application, self).__init__(handlers, **settings)
 

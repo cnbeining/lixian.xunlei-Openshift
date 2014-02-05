@@ -36,6 +36,11 @@ class GetLiXianURLHandler(BaseHandler):
 
 class ShareHandler(BaseHandler):
     def get(self, task_id):
+        new_url = self.change_protocol()
+        if new_url:
+            self.redirect(new_url)
+            return
+
         task_id = int(task_id)
 
         if not options.enable_share:

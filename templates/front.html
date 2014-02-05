@@ -3,33 +3,6 @@
 {% block head %}
 <script type="text/javascript" src="{{ static_url('js/jquery-1.4.3.min.js') }}"></script>
 <script type="text/javascript" src="{{ static_url('js/jquery.cookie.js') }}"></script>
-<script type="text/javascript">
-var host = '.' + location.host;
-
-$(window).load(function() {
-  var ssl = $.cookie('ssl');
-  switch (ssl) {
-    case 'true':
-      if (location.protocol == 'http:') {
-        location.href = location.href.replace(/http/, 'https');
-      } else {
-        $('#ssl-true').attr('selected', 'selected');
-      }
-      break;
-
-    case 'false':
-      if (location.protocol == 'https:') {
-        location.href = location.href.replace(/https/, 'http');
-      } else {
-        $('#ssl-false').attr('selected', 'selected');
-      }
-      break;
-
-    default:
-      $.removeCookie('ssl', {path: '/', domain: host});
-  }
-})
-</script>
 <script type="text/javascript" src="{{ static_url('js/fancybox/jquery.fancybox-1.3.4.pack.js') }}"></script>
 <link rel="stylesheet" href="{{ static_url('js/fancybox/jquery.fancybox-1.3.4.css') }}" type="text/css" media="screen" />
 <style>
@@ -106,8 +79,8 @@ body { min-width: 990px; }
           <div class="setting-right">
             <select id="ssl">
               <option value="default" id="ssl-default">默认</option>
-              <option value="true" id="ssl-true">是</option>
-              <option value="false" id="ssl-false">否</option>
+              <option value="true" id="ssl-true"{% if handler.get_cookie('ssl') == 'true' %} selected="selected"{% end %}>是</option>
+              <option value="false" id="ssl-false"{% if handler.get_cookie('ssl') == 'false' %} selected="selected"{% end %}>否</option>
             </select>
             <div id="ssl-notice">请使用最新版的现代浏览器<br />以获得 <a href="https://zh.wikipedia.org/wiki/SPDY" target="_blank">SPDY</a> 协议的支持。</div>
           </div>
@@ -126,15 +99,9 @@ body { min-width: 990px; }
   </div>
   <div id="tip-box"></div>
 <script>
-$(document).ready(function() {
-/*
-  var showed = $.cookie('showed');
-  if (!showed || showed != '20140130') {
-    $('#tip-box').css('left', '45%').html('').show(0).delay(5000).hide(0);
-    $.cookie('showed', '20140130', {expires: 1, path: '/', domain: host});
-  }
-*/
+var host = '.' + location.host;
 
+$(document).ready(function() {
   var path = $.cookie('aria2-jsonrpc');
   if (path) {
     $('#aria2-jsonrpc:input').val(path);
@@ -144,12 +111,10 @@ $(document).ready(function() {
   var searchTextID = searchID + ' #search-q';
   var searchIconID = searchID + ' #search-icon';
   $(searchTextID).focus(function() {
-    $(searchID).addClass('focus');
-    $(searchIconID).css('background-position', '9px -72px');
+    $(searchID).addClass('search-focus');
   });
   $(searchTextID).blur(function() {
-    $(searchID).removeClass('focus');
-    $(searchIconID).css('background-position', '9px -50px');
+    $(searchID).removeClass('search-focus');
   });
 });
 

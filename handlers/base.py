@@ -66,3 +66,15 @@ class BaseHandler(RequestHandler):
     def has_permission(self, permission):
         email = self.current_user and self.current_user["email"] or None
         return self.user_manager.check_permission(email, permission)
+
+    def change_protocol(self):
+        ssl = self.get_cookie('ssl')
+        if ssl:
+            new_url = '%s%s' % (self.request.host, self.request.path)
+            if self.request.query:
+                new_url = '%s?%s' % (new_url, self.request.query)
+            if ssl == 'true' and self.request.protocol == 'http':
+                return 'https://%s' % new_url
+            elif ssl == 'false' and self.request.protocol == 'https':
+                return 'http://%s' % new_url
+        return None

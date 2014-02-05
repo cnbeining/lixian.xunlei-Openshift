@@ -11,6 +11,11 @@ TASK_LIMIT = 30
 
 class IndexHandler(BaseHandler):
     def get(self):
+        new_url = self.change_protocol()
+        if new_url:
+            self.redirect(new_url)
+            return
+
         if not self.has_permission("view_tasklist"):
             self.set_status(403)
             self.render("view_tasklist.html")
@@ -24,14 +29,6 @@ class IndexHandler(BaseHandler):
             self.set_header("Content-Type", "application/atom+xml; charset=UTF-8")
             self.render("feed.xml", tasks=tasks)
         else:
-            ssl = self.get_cookie("ssl")
-            if ssl:
-                if ssl == "true" and self.request.protocol == "http":
-                    self.redirect("https://%s" % self.request.host)
-                    return
-                elif ssl == "false" and self.request.protocol == "https":
-                    self.redirect("http://%s" % self.request.host)
-                    return
             self.render("index.html", tasks=tasks, query={"q": q})
 
 class FeedHandler(BaseHandler):
@@ -46,6 +43,11 @@ class SitemapHandler(BaseHandler):
 
 class TagHandler(BaseHandler):
     def get(self, tag):
+        new_url = self.change_protocol()
+        if new_url:
+            self.redirect(new_url)
+            return
+
         if not self.has_permission("view_tasklist"):
             self.set_status(403)
             self.render("view_tasklist.html")
@@ -61,6 +63,11 @@ class TagHandler(BaseHandler):
 
 class UploadHandler(BaseHandler):
     def get(self, creator_id):
+        new_url = self.change_protocol()
+        if new_url:
+            self.redirect(new_url)
+            return
+
         if not self.has_permission("view_tasklist"):
             self.set_status(403)
             self.render("view_tasklist.html")
