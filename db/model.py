@@ -10,9 +10,9 @@ Base = declarative_base()
 
 class MySQLSettings(object):
     __table_args__ = {
-        #'mysql_engine'    : 'InnoDB',
-        'mysql_engine'    : 'MyISAM',
-        'mysql_charset'   : 'utf8',
+        'mysql_engine'  : 'InnoDB',
+#       'mysql_engine'  : 'MyISAM',
+        'mysql_charset' : 'utf8mb4'
         }
 
 class Set(types.TypeDecorator):
@@ -79,5 +79,5 @@ class User(Base, MySQLSettings):
     id = Column(Integer, primary_key=True)
     email = Column(String(512), index=True)
     name = Column(String(256))
-    group = Column(String(64))
+    groups = Column(String(64))
     permission = Column(Integer)

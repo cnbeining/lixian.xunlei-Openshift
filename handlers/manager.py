@@ -77,7 +77,7 @@ class ManagerIndexHandler(BaseHandler):
         user = self.user_manager.get_user_by_id(user_id)
         if not user:
             raise HTTPError(404, "User not found.")
-        user.group = group
+        user.groups = group
         self.user_manager.session.add(user)
         self.user_manager.session.commit()
         return "OK"
@@ -87,7 +87,7 @@ class ManagerIndexHandler(BaseHandler):
         user = self.user_manager.get_user_by_id(user_id)
         if not user:
             return "No such user"
-        user.group = "block"
+        user.groups = "block"
         self.user_manager.session.add(user)
         self.user_manager.session.commit()
         return "OK"

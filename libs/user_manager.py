@@ -115,7 +115,7 @@ class UserManager(object):
             return "admin"
         user = self.get_user(email)
         if user:
-            return user.group
+            return user.groups
         return None
 
     def get_add_task_limit(self, email):

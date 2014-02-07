@@ -75,6 +75,7 @@ class Application(web.Application):
             cookie_secret=options.cookie_secret,
             login_url="/login",
             autoreload=True,
+            compiled_template_cache=False,
             gzip=True,
             serve_traceback=False,
             ui_modules=ui_modules,
