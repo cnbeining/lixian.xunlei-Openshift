@@ -73,8 +73,15 @@ class BaseHandler(RequestHandler):
             new_url = '%s%s' % (self.request.host, self.request.path)
             if self.request.query:
                 new_url = '%s?%s' % (new_url, self.request.query)
-            if ssl == 'true' and self.request.protocol == 'http':
+
+            if self.request.protocol == 'http' and ssl == 'true':
                 return 'https://%s' % new_url
-            elif ssl == 'false' and self.request.protocol == 'https':
-                return 'http://%s' % new_url
+
+            if self.request.protocol == 'https':
+                if ssl == 'true':
+                    self.set_header("Strict-Transport-Security", "max-age=31536000")
+                elif ssl == 'false':
+                    self.set_header("Strict-Transport-Security", "max-age=0")
+                    return 'http://%s' % new_url
+
         return None

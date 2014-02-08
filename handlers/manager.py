@@ -73,7 +73,7 @@ class ManagerIndexHandler(BaseHandler):
 
     def change_user_group(self):
         user_id = int(self.get_argument("user_id"))
-        group = int(self.getargument("group"))
+        group = int(self.get_argument("group"))
         user = self.user_manager.get_user_by_id(user_id)
         if not user:
             raise HTTPError(404, "User not found.")
