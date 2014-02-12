@@ -6,7 +6,6 @@ import re
 import json
 import logging
 import requests
-import xml.sax.saxutils
 from hashlib import md5
 from random import random, sample, randint
 from urlparse import urlparse
@@ -48,9 +47,6 @@ def determin_url_type(url):
 title_fix_re = re.compile(r"\\([\\\"\'])")
 def title_fix(title):
     return title_fix_re.sub(r"\1", title)
-
-def unescape_html(html):
-    return xml.sax.saxutils.unescape(html)
 
 class LiXianAPI(object):
     DEFAULT_USER_AGENT = 'User-Agent:Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/535.2 (KHTML, like Gecko) Chrome/15.0.874.106 Safari/535.2'
@@ -434,8 +430,7 @@ class LiXianAPI(object):
                                                     uid = self.uid,
                                                     noCacheIE = _now()))
         r.raise_for_status()
-        # content starts with \xef\xbb\xbf, what's that?
-        function, args = parser_js_function_call(r.content[3:])
+        function, args = parser_js_function_call(r.content)
         DEBUG(pformat(args))
         if not args:
             return {}

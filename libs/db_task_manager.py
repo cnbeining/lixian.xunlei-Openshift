@@ -18,6 +18,7 @@ from libs.lixian_api import LiXianAPI, determin_url_type
 from libs.cache import mem_cache
 from tornado.options import options
 from requests.exceptions import RequestException
+from xml.sax.saxutils import unescape
 
 TASK_ID_SAMPLE_SIZE = 10
 
@@ -156,7 +157,7 @@ class DBTaskManager(object):
                     db_task.cid = task['cid']
                     db_task.url = task['url']
                     db_task.lixian_url = task['lixian_url']
-                    db_task.taskname = task['taskname'] or "NULL"
+                    db_task.taskname = unescape(task['taskname']) or "NULL"
                     db_task.task_type = task['task_type']
                     db_task.status = task['status']
                     db_task.invalid = True
@@ -217,8 +218,8 @@ class DBTaskManager(object):
                 db_file.cid = file['cid']
                 db_file.url = file['url']
                 db_file._lixian_url = file['lixian_url'] #fix_lixian_url(file['lixian_url'])
-                db_file.title = file['title']
-                db_file.dirtitle = file['dirtitle']
+                db_file.title = unescape(file['title'])
+                db_file.dirtitle = unescape(file['dirtitle'])
                 db_file.status = file['status']
                 db_file.process = file['process']
                 db_file.size = file['size']
@@ -497,4 +498,4 @@ class DBTaskManager(object):
             self._task_scheduling()
 
     def async_update(self):
-        thread.start_new_thread(DBTaskManager.update, (self, ))
+        thread.start_new_thread(self.update, ())
