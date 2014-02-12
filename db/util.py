@@ -6,12 +6,14 @@ from threading import RLock
 
 __all__ = ("sqlite_fix", "sqlalchemy_rollback")
 
+session = db.Session()
+
 sqlite_lock = RLock()
 def sqlite_fix(func):
     if db.engine.name == "sqlite":
         def wrap(self, *args, **kwargs):
             with sqlite_lock:
-                self.session.close()
+                session.close()
                 result = func(self, *args, **kwargs)
             return result
         return wrap
@@ -23,6 +25,6 @@ def sqlalchemy_rollback(func):
         try:
             return func(self, *args, **kwargs)
         except db.SQLAlchemyError, e:
-            db.Session().rollback()
+            session.rollback()
             raise
     return wrap

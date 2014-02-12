@@ -8,17 +8,18 @@ import socket
 import re
 
 import db
+from db.util import *
 from StringIO import StringIO
 from threading import Lock
-from db import Session
 from time import time
-from db.util import *
 from libs.tools import url_unmask
 from libs.lixian_api import LiXianAPI, determin_url_type
 from libs.cache import mem_cache
 from tornado.options import options
 from requests.exceptions import RequestException
 from xml.sax.saxutils import unescape
+
+Session = db.Session
 
 TASK_ID_SAMPLE_SIZE = 10
 
