@@ -91,7 +91,7 @@ class AddTaskHandler(BaseHandler, AsyncProcessMixin):
             if task:
                 self.finish("""<script>
     parent.$('#fancybox-content').css({height: "350px"});
-	parent.$.fancybox.resize();
+    parent.$.fancybox.resize();
     location='/get_lixian_url?task_id=%d'
 </script>""" % task.id)
             else:

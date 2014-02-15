@@ -72,7 +72,6 @@ input, textarea {
     text-align: right;
 }
 .CAPTCHA img {
-    margin-left: 5px;
     cursor: pointer;
     width: 140px;
     height: 56px;
