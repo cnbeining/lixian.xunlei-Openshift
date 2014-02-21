@@ -7,7 +7,7 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, scoped_session
 from sqlalchemy.exc import SQLAlchemyError
 
-engine = create_engine(options.database_engine, echo=options.database_echo, pool_recycle=10)
+engine = create_engine(options.database_engine, echo=options.database_echo, echo_pool=options.database_echo, pool_recycle=10)
 
 metadata = Base.metadata
 metadata.create_all(engine)

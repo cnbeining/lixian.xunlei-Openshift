@@ -261,8 +261,11 @@ class DBTaskManager(object):
             self.xunlei.redownload([x['task_id'] for x in paused_tasks])
 
     @sqlalchemy_rollback
-    def get_task(self, task_id):
-        return Session().query(db.Task).get(task_id)
+    def get_task(self, task_id, close_session=False):
+        session = Session()
+        if close_session: session.close()
+        result = session.query(db.Task).get(task_id)
+        return result
 
     @sqlalchemy_rollback
     def merge_task(self, task):
@@ -374,6 +377,7 @@ class DBTaskManager(object):
                 session.add(task)
                 session.commit()
                 _ = task.id
+            session.close()
             return task
 
         def _random():

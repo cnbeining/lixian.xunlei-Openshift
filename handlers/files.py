@@ -18,11 +18,15 @@ class GetLiXianURLHandler(BaseHandler):
 
         task_id = int(self.get_argument("task_id"))
         referer = self.request.headers.get("referer")
-        if not referer or not self.request.host in referer[4:10+len(self.request.host)]:
+        host_len = len(self.request.host)
+        if not referer or not self.request.host in referer[7:8+host_len]:
             self.redirect("/share/"+str(task_id))
             return
+        elif 'add_task' in referer[8+host_len:17+host_len]:
+            task = self.task_manager.get_task(task_id, close_session=True)
+        else:
+            task = self.task_manager.get_task(task_id)
 
-        task = self.task_manager.get_task(task_id)
         if task is None:
             raise HTTPError(404, "task is not exists.")
 
