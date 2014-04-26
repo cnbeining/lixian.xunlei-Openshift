@@ -45,13 +45,13 @@
 	<div class="addtask_l">标签TAG</div>
 	<div class="addtask_r">
 		<input type="text" name="tags" id="task_tags" maxlength="1024" value="{{ values['tags'] }}" style="width:300px;" />
-		<span>(选填，多个用逗号分开)</span>
+		<span>(选填，多个用逗号分隔)</span>
 	</div>
 	</div>
 
 	<div class="addtask_button">
     <div class="CAPTCHA">
-      <img src="/verifycode.jpg?timestamp={{ timestamp }}" alt="验证码" title="点击刷新验证码" onclick="this.src='/verifycode.jpg?timestamp='+new Date().getTime()" />
+      <img src="/verifycode.jpg?timestamp={{ timestamp }}" alt="验证码" title="点击刷新验证码" onclick="reset_verify_code(this);" />
       <input type="text" name="verifycode" id="verify_code" maxlength="4" value="" />
     </div>
     <div class="addtask_submit">
@@ -119,6 +119,11 @@ function on_file_change() {
   url.value = form.btfile.value;
   url.disabled = true;
   url.readOnly = true;
+}
+
+function reset_verify_code(img) {
+  img.src='/verifycode.jpg?timestamp='+new Date().getTime();
+  document.getElementById('verify_code').value='';
 }
 </script>
 {% end %}
