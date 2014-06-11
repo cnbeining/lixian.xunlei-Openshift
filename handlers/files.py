@@ -8,6 +8,7 @@ from .base import BaseHandler
 import re
 from urllib import quote_plus
 from libs.tools import thunder_filename_encode
+from xml.sax.saxutils import escape
 
 class GetLiXianURLHandler(BaseHandler):
     def get(self):
@@ -64,7 +65,8 @@ class ShareHandler(BaseHandler):
 
 class XSSDoneHandler(BaseHandler):
     def get(self):
-        gdriveid = self.get_argument("gdriveid")
+        gdriveid = escape(self.get_argument("gdriveid"))
+
         cookie = options.cookie_str % gdriveid
         self.write('document.cookie="%s"' % cookie)
         self.set_cookie("xss", gdriveid)
@@ -175,7 +177,7 @@ handlers = [
         (r"/share/(\d+)", ShareHandler),
         (r"/xss", XSSDoneHandler),
         (r"/xssjs", XSSJSHandler),
-        (r"/xss_check.js", XSSCheckHandler),
+        (r"/xss_check\.js", XSSCheckHandler),
 ]
 ui_modules = {
 }
