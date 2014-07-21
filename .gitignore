@@ -3,3 +3,5 @@
 *.log
 *.o
 *.so
+.tags
+.tags_sorted_by_file

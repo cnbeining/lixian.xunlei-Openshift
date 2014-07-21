@@ -7,7 +7,8 @@ from tornado.web import HTTPError, UIModule, asynchronous, authenticated
 from tornado.options import options
 from functools import partial
 from base import BaseHandler
-from libs.util import AsyncProcessMixin, _now, _get
+from libs.util import AsyncProcessMixin, _now
+from requests.api import get
 
 add_task_info_map = {
      0: u"添加任务失败",
@@ -102,10 +103,13 @@ class AddTaskHandler(BaseHandler, AsyncProcessMixin):
             else:
                 self.render("add_task.html", message=add_task_info_map.get(result, u"未知错误"), timestamp=_now(), values=values_map)
 
-class VerifycodeImageHandler(BaseHandler):
+class VerifycodeImageHandler(BaseHandler, AsyncProcessMixin):
+    @authenticated
+    @asynchronous
+    @gen.engine
     def get(self):
         verifycode_image_url = 'http://verify2.xunlei.com/image?t=MVA&cachetime=%s' % _now()
-        r = _get(verifycode_image_url)
+        r = yield gen.Task(self.call_subprocess, partial(get, verifycode_image_url))
         verifycode_image = r.content
         verifykey = r.cookies['VERIFY_KEY']
         self.set_header('Content-Type', 'image/jpeg')

@@ -10,7 +10,7 @@ class LoginHandler(BaseHandler, GoogleMixin):
     @asynchronous
     def get(self):
         if self.get_argument("openid.mode", None):
-            self.get_authenticated_user(self.async_callback(self._on_auth))
+            self.get_authenticated_user(self._on_auth)
             return
         if self.get_argument("logout", None):
             self.clear_cookie("name", domain='.%s' % self.request.host, path='/')

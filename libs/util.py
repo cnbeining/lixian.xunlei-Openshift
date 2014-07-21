@@ -7,13 +7,10 @@ import thread
 import tornado
 from multiprocessing import Pipe
 import time
-from requests.api import get
+from functools import partial
 
 def _now():
     return int(time.time()*1000)
-
-def _get(url):
-    return get(url)
 
 units = ['B', 'KB', 'MB', 'GB', 'TB', 'PB']
 def format_size(request, size):
@@ -59,7 +56,7 @@ class AsyncProcessMixin(object):
                 pipe.send(e)
 
         self.ioloop.add_handler(self.pipe.fileno(),
-                  self.async_callback(self.on_pipe_result, callback),
+                  partial(self.on_pipe_result, callback),
                   self.ioloop.READ)
         thread.start_new_thread(wrap, (func, child_conn, args, kwargs))
 
