@@ -36,7 +36,7 @@ var _hmt = _hmt || [];
     m.parentNode.insertBefore(a, m)
 })(window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga');
 
-ga('create', '{{ options.ga_account }}', 'sinosky.org');
+ga('create', '{{ options.ga_account }}', '{{ request.host }}');
 ga('require', 'linkid', 'linkid.js');
 ga('require', 'displayfeatures');
 ga('send', 'pageview');
