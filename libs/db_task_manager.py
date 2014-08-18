@@ -419,22 +419,18 @@ class DBTaskManager(object):
                 info = check(*url)
             else:
                 info = check(url)
-
-            if not info:
-                if not self.xunlei.re_login(): return (-8, "re login fail")
-                info = check(url)
-                if not info: return (-1, "check task error")
-
-            if need_miaoxia and not info.get('cid'): return (-2, "need miaoxia")
-            if need_miaoxia and not self.xunlei.is_miaoxia(info['cid'], [x['index'] for x in info['filelist'] if x['valid']][-20:]): return (-2, "need miaoxia")
+            if not info: return (-1, "check task error")
+            if need_miaoxia and not info.get('cid'):
+                return (-2, "need miaoxia")
+            if need_miaoxia and not self.xunlei.is_miaoxia(info['cid'],
+                    [x['index'] for x in info['filelist'] if x['valid']][-20:]):
+                return (-2, "need miaoxia")
         else:
-            if need_miaoxia and not self.xunlei.is_miaoxia(url): return (-2, "need miaoxia")
+            if need_miaoxia and not self.xunlei.is_miaoxia(url):
+                return (-2, "need miaoxia")
             info = check(url)
-
             if not info:
-                if not self.xunlei.re_login(): return (-8, "re login fail")
-                info = check(url)
-                if not info: return (-3, "space error")
+                return (-3, "space error")
 
         # step 3: check info
         # for bt
