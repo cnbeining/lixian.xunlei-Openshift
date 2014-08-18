@@ -649,8 +649,13 @@ class LiXianAPI(object):
 
     def get_cookie(self, attr=""):
         cookies = self.session.cookies
+
         if attr:
+            if attr not in cookies:
+                return None
+
             return cookies[attr]
+
         return cookies
 
     LOGOUT_URL = "http://login.xunlei.com/unregister?sessionid=%(sessionid)s"
