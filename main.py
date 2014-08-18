@@ -59,6 +59,10 @@ define("reg_key", default=None,
         help="if setted new user is not allowed except login with '/login?key=<reg_key>'.")
 define("enable_share", default=True, help="enable share task")
 
+define("google_oauth_key", default=None, help="google oauth client id")
+define("google_oauth_secret", default=None, help="google oauth client secret")
+define("root_user_mode", default=False, help="everyone is root")
+
 class Application(web.Application):
     def __init__(self):
         from handlers import handlers, ui_modules
@@ -76,6 +80,11 @@ class Application(web.Application):
             compiled_template_cache=False,
             gzip=True,
             serve_traceback=False,
+            google_oauth={
+                "key": options.google_oauth_key,
+                "secret": options.google_oauth_secret,
+                },
+
             ui_modules=ui_modules,
             ui_methods=ui_methods
         )

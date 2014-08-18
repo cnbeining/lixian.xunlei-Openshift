@@ -1,17 +1,23 @@
 # -*- encoding: utf-8 -*-
 # author: binux<17175297.hk@gmail.com>
 
+
+from tornado.gen import coroutine
 from tornado.web import HTTPError, asynchronous
-from tornado.auth import GoogleMixin
+from tornado.auth import GoogleOAuth2Mixin
 from tornado.options import options
 from .base import BaseHandler
 
-class LoginHandler(BaseHandler, GoogleMixin):
-    @asynchronous
+class LoginHandler(BaseHandler, GoogleOAuth2Mixin):
+    @coroutine
     def get(self):
-        if self.get_argument("openid.mode", None):
-            self.get_authenticated_user(self._on_auth)
+        if self.get_argument('code', False):
+            user = yield self.get_authenticated_user(
+                redirect_uri='http://%s/auth/google' % self.request.host,
+                code=self.get_argument('code'))
+            self._on_auth(user)
             return
+
         if self.get_argument("logout", None):
             self.clear_cookie("name", domain='.%s' % self.request.host, path='/')
             self.clear_cookie("email", domain='.%s' % self.request.host, path='/')
@@ -20,7 +26,12 @@ class LoginHandler(BaseHandler, GoogleMixin):
         reg_key = self.get_argument("key", None)
         if reg_key:
             self.set_secure_cookie("reg_key", reg_key, expires_days=1, domain='.%s' % self.request.host, path='/')
-        self.authenticate_redirect()
+        yield self.authorize_redirect(
+            redirect_uri='http://%s/login' % self.request.host,
+            client_id=self.settings['google_oauth']['key'],
+            scope=['profile', 'email'],
+            response_type='code',
+            extra_params={'approval_prompt': 'auto'})
 
     def _on_auth(self, user):
         import logging
@@ -42,8 +53,8 @@ class LoginHandler(BaseHandler, GoogleMixin):
                 self.finish("Registry is Disabled by Administrator.")
                 return
         self.user_manager.update_user(user["email"], user["name"])
-        self.set_secure_cookie("name", user["name"], expires_days=90, domain='.%s' % self.request.host, path='/')
-        self.set_secure_cookie("email", user["email"], expires_days=90, domain='.%s' % self.request.host, path='/')
+        self.set_secure_cookie("name", user["name"], expires_days=90, domain='.%s' % self.request.host, path='/'))
+        self.set_secure_cookie("email", user["email"], expires_days=90, domain='.%s' % self.request.host, path='/'))
         self.redirect("/")
 
 handlers = [
