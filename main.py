@@ -59,6 +59,8 @@ define("reg_key", default=None,
         help="if setted new user is not allowed except login with '/login?key=<reg_key>'.")
 define("enable_share", default=True, help="enable share task")
 define("root_user_mode", default=False, help="everyone is root")
+define("google_client_id", default="", help="google oauth2 client id")
+define("google_client_secret", default="", help="google oauth2 client secret")
 
 class Application(web.Application):
     def __init__(self):

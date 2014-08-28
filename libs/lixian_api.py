@@ -60,11 +60,18 @@ class LiXianAPI(object):
         self.task_url = None
         self.uid = 0
         self.username = ""
+        self.password = ""
 
     LOGIN_URL = 'http://login.xunlei.com/sec2login/'
     def login(self, username, password, verifycode=None):
         self.username = username
+        self.password = password
+
         verifycode = verifycode or self._get_verifycode(username)
+
+        if not verifycode:
+            return False
+
         login_data = dict(
                 u = username,
                 p = hex_md5(hex_md5(hex_md5(password))+verifycode.upper()),
@@ -91,10 +98,11 @@ class LiXianAPI(object):
 
         verifycode_tmp = r.cookies['check_result'].split(":", 1)
         assert 2 >= len(verifycode_tmp) > 0, verifycode_tmp
+
         if verifycode_tmp[0] == '0':
             return verifycode_tmp[1]
-        else:
-            return None
+
+        return None
 
     VERIFY_CODE = 'http://verify2.xunlei.com/image?cachetime=%s'
     def verifycode(self):
@@ -812,3 +820,4 @@ class LiXianAPI(object):
         DEBUG(pformat(args))
         assert args
         return args[0]
+

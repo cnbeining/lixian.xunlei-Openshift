@@ -42,12 +42,22 @@ def catch_connect_error(default_return):
             except RequestException, e:
                 logging.error(repr(e))
                 return default_return
+
             except socket.timeout, e:
                 logging.error(repr(e))
                 return default_return
+
             except AssertionError, e:
                 logging.error(repr(e))
                 return default_return
+
+            except KeyError, e:
+                if DBTaskManager().relogin(self):
+                    return func(*args, **kwargs)
+
+                logging.error(repr(e))
+                return default_return
+
         new_func.__name__ = func.__name__
         return new_func
     return warp
@@ -80,10 +90,14 @@ class DBTaskManager(object):
     def xunlei(self):
         if self._last_check_login + options.check_interval < time():
             if not self._xunlei.check_login():
-                self._xunlei.logout()
-                self.islogin = self._xunlei.login(self.username, self.password)
+                self.re_login()
             self._last_check_login = time()
         return self._xunlei
+
+    def re_login(self):
+        self._xunlei.logout()
+        self.islogin = self._xunlei.login(self.username, self.password)
+        return self.islogin
 
     @property
     def gdriveid(self):
@@ -504,3 +518,11 @@ class DBTaskManager(object):
 
     def async_update(self):
         thread.start_new_thread(self.update, ())
+
+    def re_login(self):
+        self.logout()
+
+        if self.login(self.username, self.password):
+            return True
+
+        return False
