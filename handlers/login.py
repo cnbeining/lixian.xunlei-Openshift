@@ -11,13 +11,13 @@ class LoginHandler(BaseHandler, GoogleMixin):
     def get(self):
         if self.get_argument("openid.mode", None):
             self.get_authenticated_user(self._on_auth)
-            self.finish()
+            return
 
         if self.get_argument("logout", None):
             self.clear_cookie("name", domain='.%s' % self.request.host, path='/')
             self.clear_cookie("email", domain='.%s' % self.request.host, path='/')
             self.redirect("/")
-            self.finish()
+            return
 
         reg_key = self.get_argument("key", None)
         if reg_key:
@@ -29,6 +29,7 @@ class LoginHandler(BaseHandler, GoogleMixin):
         if not user:
             self.set_status(500)
             self.finish('Google auth failed.')
+            return
 
         if "zh" in user.get("locale", ""):
             chinese = False
@@ -45,6 +46,7 @@ class LoginHandler(BaseHandler, GoogleMixin):
             if not _user and reg_key != options.reg_key:
                 self.set_status(403)
                 self.finish("Registry is Disabled by Administrator.")
+                return
 
         self.user_manager.update_user(user["email"], user["name"])
         self.set_secure_cookie("name", user["name"], expires_days=90, domain='.%s' % self.request.host, path='/')
