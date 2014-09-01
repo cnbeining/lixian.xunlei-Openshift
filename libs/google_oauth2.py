@@ -1,4 +1,4 @@
-from tornado import httpclient
+from tornado.httpclient import AsyncHTTPClient, HTTPRequest
 from tornado.auth import OAuth2Mixin
 from tornado.concurrent import return_future
 from tornado.httputil import url_concat
@@ -17,7 +17,7 @@ class GoogleOAuth2Mixin(OAuth2Mixin):
 
     @property
     def httpclient_instance(self):
-        return httpclient.AsyncHTTPClient()
+        return AsyncHTTPClient()
 
     def authorize_redirect(self, scope, redirect_uri, **kwargs):
         args = {
@@ -47,7 +47,7 @@ class GoogleOAuth2Mixin(OAuth2Mixin):
 
         body = urlencode(args)
 
-        request = httpclient.HTTPRequest(self._OAUTH_ACCESS_TOKEN_URL, method="POST", body=body)
+        request = HTTPRequest(self._OAUTH_ACCESS_TOKEN_URL, method="POST", body=body)
 
         self.httpclient_instance.fetch(request, partial(self._on_access_token, callback))
 
