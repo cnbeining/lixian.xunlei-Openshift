@@ -3,7 +3,6 @@
 
 from tornado.web import HTTPError, asynchronous
 from tornado.options import options
-from tornado.escape import json_encode
 from .base import BaseHandler
 from libs.google_oauth2 import GoogleOAuth2Mixin
 
