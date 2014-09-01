@@ -2,15 +2,20 @@
 # author: binux<17175297.hk@gmail.com>
 
 from tornado.web import HTTPError, asynchronous
-from tornado.auth import GoogleMixin
 from tornado.options import options
+from tornado.escape import json_encode
 from .base import BaseHandler
+from libs.google_oauth2 import GoogleOAuth2Mixin
 
-class LoginHandler(BaseHandler, GoogleMixin):
+
+class LoginHandler(BaseHandler, GoogleOAuth2Mixin):
     @asynchronous
     def get(self):
-        if self.get_argument("openid.mode", None):
-            self.get_authenticated_user(self._on_auth)
+        redirect_uri = "%s://%s/login" % (self.request.protocol, self.request.host)
+
+        authorization_code = self.get_argument("code", None)
+        if authorization_code:
+            self.get_authenticated_user(authorization_code, redirect_uri, self._on_auth)
             return
 
         if self.get_argument("logout", None):
@@ -23,12 +28,15 @@ class LoginHandler(BaseHandler, GoogleMixin):
         if reg_key:
             self.set_secure_cookie("reg_key", reg_key, expires_days=1, domain='.%s' % self.request.host, path='/')
 
-        self.authenticate_redirect()
+        self.authorize_redirect(
+            'profile email',
+            redirect_uri
+        )
 
     def _on_auth(self, user):
         if not user:
             self.set_status(500)
-            self.finish('Google auth failed.')
+            self.finish("Google auth failed.")
             return
 
         if "zh" in user.get("locale", ""):
@@ -38,7 +46,7 @@ class LoginHandler(BaseHandler, GoogleMixin):
                     chinese = True
                     break
             if chinese:
-                user["name"] = user.get("last_name", "")+user.get("first_name", "")
+                user["name"] = user.get("family_name", "")+user.get("given_name", "")
 
         if options.reg_key:
             _user = self.user_manager.get_user(user["email"])

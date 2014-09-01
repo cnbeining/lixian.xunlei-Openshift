@@ -1,10 +1,9 @@
 # -*- encoding: utf-8 -*-
 # author: binux<17175297.hk@gmail.com>
 
-import time
-
 from tornado.web import RequestHandler
 from tornado.options import options
+
 
 class BaseHandler(RequestHandler):
     @property

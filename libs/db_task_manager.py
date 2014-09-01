@@ -518,11 +518,3 @@ class DBTaskManager(object):
 
     def async_update(self):
         thread.start_new_thread(self.update, ())
-
-    def re_login(self):
-        self.logout()
-
-        if self.login(self.username, self.password):
-            return True
-
-        return False
