@@ -25,6 +25,8 @@ define("site_name", default=u"轻松下", help="site name used in description")
 define("site_subtitle", default=u"Easily download it", help="site subtitle used in description")
 define("cookie_secret", default="7bLv5TdHG6oQXlt1ORsnrfmbuBQcxGgU",
         help="key for HMAC")
+define("re_login_interval", default=60*60*24*7,
+        help="the interval of force re-login to xunlei")
 define("check_interval", default=60*60,
         help="the interval of checking login status")
 define("cache_enabled", default=True,

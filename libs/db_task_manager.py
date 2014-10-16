@@ -66,7 +66,7 @@ class DBTaskManager(object):
     def __init__(self, username, password):
         self.username = username
         self.password = password
-        self._last_check_login = 0
+
         self._last_update_all_task = 0
         self._last_update_downloading_task = 0
         self._last_get_task_list = 0
@@ -84,19 +84,28 @@ class DBTaskManager(object):
                 verifycode_fp.write(self._xunlei.verifycode())
             _verifycode = raw_input('Please open ./verifycode.jpg and enter the verifycode: ')
         self.islogin = self._xunlei.login(self.username, self.password, _verifycode)
+
+        self._last_login = time()
         self._last_check_login = time()
 
     @property
     def xunlei(self):
-        if self._last_check_login + options.check_interval < time():
-            if not self._xunlei.check_login():
-                self.re_login()
-            self._last_check_login = time()
+        if self._last_login + options.re_login_interval > time() and\
+           self._last_check_login + options.check_interval > time() and\
+           self._xunlei.check_login():
+               self._last_check_login = time()
+               return self._xunlei
+
+        self.re_login()
         return self._xunlei
 
     def re_login(self):
         self._xunlei.logout()
         self.islogin = self._xunlei.login(self.username, self.password)
+
+        self._last_login = time()
+        self._last_check_login = time()
+
         return self.islogin
 
     @property
