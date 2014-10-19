@@ -12,8 +12,8 @@ class GoogleOAuth2Mixin(OAuth2Mixin):
     _OAUTH_HOST = "www.googleapis.com"
     _OAUTH_AUTHENTICATE_URL = "https://accounts.google.com/o/oauth2/auth"
     _OAUTH_ACCESS_TOKEN_URL = "https://accounts.google.com/o/oauth2/token"
-    _OAUTH_TOKEN_VALIDATION_URL = "https://%s/oauth2/v1/tokeninfo" % _OAUTH_HOST
-    _USER_INFO_PATH = "/oauth2/v1/userinfo"
+    _OAUTH_TOKEN_VALIDATION_URL = "https://%s/oauth2/v2/tokeninfo" % _OAUTH_HOST
+    _USER_INFO_PATH = "/oauth2/v2/userinfo"
 
     @property
     def httpclient_instance(self):
@@ -74,7 +74,7 @@ class GoogleOAuth2Mixin(OAuth2Mixin):
         conn = HTTPSConnection(self._OAUTH_HOST)
         conn.request(
             "GET",
-            self._USER_INFO_PATH + "?access_token=" + session['access_token'],
+            self._USER_INFO_PATH,
             "",
             headers
         )
