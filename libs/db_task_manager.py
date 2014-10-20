@@ -52,7 +52,7 @@ def catch_connect_error(default_return):
                 return default_return
 
             except KeyError, e:
-                if DBTaskManager().relogin(self):
+                if DBTaskManager().re_login(self):
                     return func(*args, **kwargs)
 
                 logging.error(repr(e))
