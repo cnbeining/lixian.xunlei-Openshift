@@ -29,12 +29,12 @@ def main():
     cookie_secret = ''.join(random.SystemRandom().choice(string.ascii_uppercase + string.ascii_lowercase + string.digits) for _ in range(40))
     data_dir = str(os.environ.get('OPENSHIFT_DATA_DIR'))
     repo_dir = str(os.environ.get('OPENSHIFT_REPO_DIR'))
-    f = open(repo_dir + '/config.conf', 'w')
+    f = open(repo_dir + 'config.conf', 'w')
     ff = '''username = ""
 password = ""
 google_client_id = ""
 google_client_secret = ""
-port = "{port}"
+port = {port}
 bind_ip = "{ip}"
 ga_account = ""
 baidu_account = ""

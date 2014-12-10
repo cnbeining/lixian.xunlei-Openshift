@@ -54,7 +54,7 @@ Usage
 Just ::
 
     tmux
-    python main.py --f=<config>
+    python main.py
 
 Getting help ::
 
