@@ -20,7 +20,7 @@ def main():
     # Install requirements
     data_dir = str(os.environ.get('OPENSHIFT_DATA_DIR'))
     repo_dir = str(os.environ.get('OPENSHIFT_REPO_DIR'))
-    os.system('pip install -r ' + repo_dir + 'requirements.txt')
+    #os.system('pip install --use-mirrors -r ' + repo_dir + 'requirements.txt')
     if os.environ.get('OPENSHIFT_PYTHON_PORT'):
         port = str(os.environ.get('OPENSHIFT_PYTHON_PORT'))
         # python-2.x
