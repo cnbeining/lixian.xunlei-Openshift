@@ -43,7 +43,8 @@ var LE = {
     LE.export(function(taskname, links, cookie) {
       var str = "";
       $.each(links, function(i, n) {
-        str += "aria2c -c -s16 -x16 -k1M --out "+escape_command(n.title)+" --header 'Cookie:"+cookie+";' "+multiple_server_fix(n.url)+"\n";
+          //delete server support for less error
+        str += "aria2c -c -s16 -x16 -k1M --out "+escape_command(n.title)+" --header 'Cookie:"+cookie+";' '"+n.url+"'\n";
       });
       return str;
     });

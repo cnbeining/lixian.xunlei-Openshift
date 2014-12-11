@@ -35,11 +35,11 @@ First thing first, go to https://developers.google.com/accounts/docs/OAuth2 and 
 
 You can deploy a ```diy-0.1``` or ```python-2.x``` of your node.
 
-After the node is deployed, please log in the shell, edit and run:
+After the node is deployed and for some reason the config file failed, please log in the shell, edit and run:
 
 ::
 
-    python config.py
+    python re-config.py
 
 This file is located at ```$OPENSHIFT_REPO_DIR``` .
 
@@ -51,10 +51,17 @@ If requirements fail, please run:
 
 Usage
 -----
-Just ::
+
+Edit ```config.conf```, and put your Thunder account and Google OAuth2 info in it.
+
+Then ::
 
     tmux
     python main.py
+
+If you hate tmux and are sure that you would not need to enter the verify code:
+
+    nohup ${OPENSHIFT_REPO_DIR}/diy/main.py > ${OPENSHIFT_DIY_LOG_DIR}/lixian.xunlei.log 2>&1 &
 
 Getting help ::
 
@@ -89,16 +96,18 @@ You may get a copy of the GNU Lesser General Public License from <http://www.gnu
 FAQ
 -------
 
-1. Why you don't use the built-in start or deploy?
+1. Why you don't use the built-in start?
 
     Chances are you will need to enter a verifycode when you login. So I would rather bring it out than ganbling that you would not need to enter any verifycode.
+    
+    Since you need to enter the user info by yourself, the deploy script is unfinished.
    
    
-2. I cannot bind to the port! (Usually 8080)
+2. I cannot bind to the internal port! (Usually 8080)
     
-    Sometimes Openshift would run a httpd server that would occupy this port, or you did not exit the programme correctly.
+    Sometimes Openshift automatically runs a httpd server that would occupy this port, or maybe you did not exit the programme correctly.
     
-    Check the environment varible OPENSHIFT_PYTHON_PORT(or OPENSHIFT_DIY_PORT if you are using diy). This port is usually 8080.
+    Check the environment varible $OPENSHIFT_PYTHON_PORT(or $OPENSHIFT_DIY_PORT if you are using diy). This port is usually 8080.
     Then run:
     
         lsof -i:8080
@@ -110,3 +119,9 @@ FAQ
         kill -9 (pid)
     
     And you should be able to run.
+
+3. How can I make someone admin?
+    
+    Right now there's no user control panel for this programme, but you can always change the user group to ```admin``` to fix this.
+    
+    Also you can login with 127.0.0.1.
