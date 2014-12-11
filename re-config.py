@@ -41,7 +41,7 @@ baidu_account = ""
 site_name = u"Thunder Lixian Exporter Openshift"
 site_subtitle = u"By Beining@ACICFG"
 cookie_secret = "{cookie_secret}"
-database_engine = "sqlite:///{data_dir}/task_files.db"
+database_engine = "sqlite:///{data_dir}task_files.db"
 '''.format(port = port, ip = ip, cookie_secret = cookie_secret, data_dir = data_dir)
     ff = ff.encode("utf8")
     f.write(ff)
